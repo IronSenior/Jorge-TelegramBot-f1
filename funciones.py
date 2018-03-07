@@ -3,12 +3,11 @@ import telegram
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters
-import token as tuko
 import time
 import random
 import csv
 
-token = tuko.token()
+token = 
 bot = telegram.Bot(token=token)
 updater = Updater(token=token)
 
@@ -19,7 +18,6 @@ def send(message, bot, update):
 
 def existe_comp(nombre):
 	existe = False
-	print "estoy en funciones"
 	with open("./competitions/competitions.csv", 'rb') as csvfile:
 		reader = csv.DictReader(csvfile, delimiter=",")
 		for row in reader:

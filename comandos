@@ -1,0 +1,2 @@
+start_competition - Crea una nueva competición (/start_competition <nombre> <contraseña de jugador> <contraseña de admin>)
+new_player - Añade un jugador nuevo a una competición (/new_player <competicion> <contraseña de jugador> <jugador>)
