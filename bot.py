@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import telegram
 from telegram.ext import Updater
@@ -5,20 +6,37 @@ from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters
 import funciones as func
 import private as tuko
+import sqlite3
 import time
 import random
 import csv
 
+#//////////////////////////////////////////////////////////////////////////////////
+
+#CONFIGURACIÓN DE TELEGRAM
 token = tuko.tuko()
 bot = telegram.Bot(token=token)
 updater = Updater(token=token)
 
 dispatcher = updater.dispatcher
 
+#CONFIGURACIÓN DE DB
+try:
+	db = sqlite3.connect("./BaseDatos")
+	#db = sqlite3.connect(':memory:')
 
+	cursor = db.cursor()
+	print "La base de datos se abrió correctamente"
+except:
+	print "Error con la base de datos"
+
+#//////////////////////////////////////////////////////////////////////////////////
+
+#Simplifica el enviar
 def send(message, bot, update):
 	bot.send_message(chat_id=update.message.chat_id, text=message)
 
+#Crea una competicion
 def new_competition(bot, update, args):
 	if args == []:
 		send("Error!! Tienes que decirme el nombre de la competición", bot, update)
@@ -35,8 +53,11 @@ def new_competition(bot, update, args):
 			send("Has comenzado la competición con éxito", bot, update)
 			send("Ahora todos se pueden unir", bot, update)
 
+#Te añade a la competición del chat
 def new_player(bot, update, args):
 	#En el futuro no pedirá el nombre y lo cogera de telegram
+	#print update.message.user_name
+
 	if args == []:
 		send("Dime un nombre para la clasificación")
 
