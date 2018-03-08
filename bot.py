@@ -4,11 +4,12 @@ from telegram.ext import Updater
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters
 import funciones as func
+import private as tuko
 import time
 import random
 import csv
 
-token = 
+token = tuko.tuko()
 bot = telegram.Bot(token=token)
 updater = Updater(token=token)
 
