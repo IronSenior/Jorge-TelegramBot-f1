@@ -1,2 +1,2 @@
-start_competition -(/comando <nombre> <contraseña de jugador> <contraseña de admin>)
-new_player -(/comando <competicion> <contraseña de jugador> <jugador>)
+start_competition -(/comando <nombre>)
+join_in -(/comando <jugador>)

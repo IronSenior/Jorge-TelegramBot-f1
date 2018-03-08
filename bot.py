@@ -21,39 +21,46 @@ def send(message, bot, update):
 
 def new_competition(bot, update, args):
 	if args == []:
-		send("Error!! Tienes que decirme el nombre de la competición y la password", bot, update)
+		send("Error!! Tienes que decirme el nombre de la competición", bot, update)
 
-	elif args[0] and args[1]:
+	elif args[0]:
 		nombre = str(args[0])
-		passwd = str(args[1])
-		if func.existe_comp(nombre):
-			send("Ese nombre no es válido o ya está en uso", bot, update)
+		chat_id = update.message.chat_id
+
+		if func.existe_comp(chat_id):
+			send("En este chat ya hay una competición", bot, update)
 		else:
-			competition = [nombre, passwd]
+			competition = [nombre,chat_id]
 			func.crear_comp(competition)
 			send("Has comenzado la competición con éxito", bot, update)
 			send("Ahora todos se pueden unir", bot, update)
 
 def new_player(bot, update, args):
-	comp = args[0]
-	password = args[1]
-	id_player = args[2]
-	#permiso = func.passwd_comp(comp, password, id_player) 
-	
-	if True:
-		func.add_player(comp, id_player)
-		send("Jugador añadido", bot, update)
+	#En el futuro no pedirá el nombre y lo cogera de telegram
+	if args == []:
+		send("Dime un nombre para la clasificación")
 
-	else:
-		send("Error! Ha introducido mal los datos de la competición")
+	elif args[0]:
+		comp = update.message.chat_id
+		id_player = args[0]
+		permiso = func.get_comp(comp)
+
+		if permiso:
+			func.add_player(comp, id_player)
+			send("Te has unido con exito", bot, update)
+
+		else:
+			send("Error! No existe una competición todavía")
 
 
 
 
 competition_handler = CommandHandler('start_competition', new_competition, pass_args=True)
-matricula_handler = CommandHandler('unirme', new_player, pass_args=True)
+matricula_handler = CommandHandler('join_in', new_player, pass_args=True)
+
 
 dispatcher.add_handler(competition_handler)
 dispatcher.add_handler(matricula_handler)
+
 
 updater.start_polling()
