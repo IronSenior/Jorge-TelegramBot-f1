@@ -116,6 +116,12 @@ def get_comp(chat_id):
 				return name
 
 
+def quote_string(str):
+	str='"'+str+'"'
+	return str
+
+
+
 #def start_db():
 #	cursor.execute('''CREATE TABLE COMPETICIONES
 #				(ID INT PRIMARY KEY			NOT NULL,
