@@ -117,7 +117,7 @@ def get_comp(chat_id):
 
 
 def quote_string(str):
-	str='"'+str+'"'
+	str="'"+str+"'"
 	return str
 
 
