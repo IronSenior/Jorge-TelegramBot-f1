@@ -30,9 +30,9 @@ def new_competition(m):
     elif cid < 0:
         if comp.create(cid):
             send(m, "La competición se ha creado")
+        else:
+            send(m, "Ya hay una competción en este grupo")
 
-        #db = database_functions()
-        #db.competiciones()
     else:
             print "Se produjo un fallo E:001"
 
