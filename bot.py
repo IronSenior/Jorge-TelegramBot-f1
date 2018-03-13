@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 import telebot
 
-from libs import *
-from database_func import *
+from libs import comp_func as comp
+from libs import user_func as user
+import private as tk
 import time
 import random
 
@@ -21,17 +22,19 @@ def send(m, message_text):
 #Crea una competicion
 @bot.message_handler(commands=['start_competition'])
 def new_competition(m):
-    cid = int(m.chat.id) #Chat_id
+    cid = m.chat.id #Chat_id
 
     if cid > 0:
         send(m, "Error!! Debes crear la competición en un grupo")
 
     elif cid < 0:
-        send(m, "La competición se ha creado")
+        if comp.create(cid):
+            send(m, "La competición se ha creado")
+
         #db = database_functions()
         #db.competiciones()
     else:
-            print "Existe un fallo"
+            print "Se produjo un fallo E:001"
 
 
 bot.polling()
