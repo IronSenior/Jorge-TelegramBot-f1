@@ -1,54 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import telegram
-from telegram.ext import Updater
-from telegram.ext import CommandHandler
-from telegram.ext import MessageHandler, Filters
+import telebot
 
+from libs import *
 from database_func import *
-import private as tk
 import time
 import random
 
 
 
 #CONFIGURACIÓN DE TELEGRAM
-token = tk.tuko()
-bot = telegram.Bot(token=token)
-updater = Updater(token=token)
-dispatcher = updater.dispatcher
-
+token = tk.tk()
+bot = telebot.TeleBot(token)
 
 
 #Simplifica el enviar
-def send(message, bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text=message)
+def send(m, message_text):
+    bot.send_message(m.chat.id, message_text)
 
 #Crea una competicion
-def new_competition(bot, update, args):
+@bot.message_handler(commands=['start_competition'])
+def new_competition(m):
+    cid = int(m.chat.id) #Chat_id
 
-    if len(args) == 0:
-        send("Error!! Hulio", bot, update)
+    if cid > 0:
+        send(m, "Error!! Debes crear la competición en un grupo")
 
-    elif args[0]:
-        nombre = str(args[0])
-        chat_id = int(update.message.chat_id)
-
-        data = [str(nombre),int(chat_id)]
-
-        db = database_functions()
-        db.competiciones()
-
-
+    elif cid < 0:
+        send(m, "La competición se ha creado")
+        #db = database_functions()
+        #db.competiciones()
     else:
             print "Existe un fallo"
 
 
-
-
-
-
-competition_handler = CommandHandler('start_competition', new_competition, pass_args=True)
-dispatcher.add_handler(competition_handler)
-
-updater.start_polling()
+bot.polling()
