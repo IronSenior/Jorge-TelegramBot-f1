@@ -1,0 +1,11 @@
+{"player_list": ["lista de ids de los jugadores"],
+	"player_1_id": {"name": "","position":"", "lr_time": ""},
+	"player_2_id": {"name": "","position":"", "lr_time": ""}
+	""
+	""
+	""
+	""
+
+}
+
+#Funciona como un diccionario de python (teneis la funcion create_comp como ejemplo de como se maneja en python)

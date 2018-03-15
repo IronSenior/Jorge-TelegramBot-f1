@@ -20,7 +20,7 @@ def send(m, message_text):
     bot.send_message(m.chat.id, message_text)
 
 #Crea una competicion
-@bot.message_handler(commands=['start_competition'])
+@bot.message_handler(commands=['st_comp'])
 def new_competition(m):
     cid = m.chat.id #Chat_id
     if cid > 0:
@@ -29,7 +29,7 @@ def new_competition(m):
         if comp.existe_comp(cid):
             send(m, "Ya hay una competción en este grupo")
         else:
-            comp.create(cid)
+            comp.create_comp(cid)
             send(m, "La competición se ha creado")
     else:
             print "Se produjo un fallo E:001"
@@ -51,6 +51,16 @@ def join_in(m):
             send(m, message)
     else:
         send(m, "No hay competición en este grupo todavía")
+
+
+@bot.message_handler(commands=['dl_comp'])
+def dl_competition(m):
+    cid = m.chat.id
+    if comp.existe_comp(cid):
+        comp.dl_competition(cid)
+        send(m, "La competición ha sido eliminada")
+    else:
+        send(m, "No existe competición todavía")
 
 
 bot.polling()

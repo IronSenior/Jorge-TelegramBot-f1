@@ -6,15 +6,16 @@ import os
 #Obviamente este path es provisional y en cada equivo debe cambiar (se pondrá el definitivo en el servidor)
 db_path = "/home/pepe/Escritorio/Mis proyectos/Jorge-telegram-bot/DB/"
 
-def create(chat_id):
+def create_comp(cid):
 	#La función creará una carpeta donde se van a almacenar todos los datos de esa competición
 	#El path será la carpeta DB que hay en el mismo directorio que bot.py
-	path = db_path + str(chat_id)
+	path = db_path + str(cid)
 	os.mkdir(path)
 
 	#Crea también los archivos json base que necesita la competición
 	with open('%s/players.json'%(path), 'w') as outfile:
-		data = {'player_list' : []}
+		data = { 'player_list' : [],}
+
 		json.dump(data, outfile)
 
 def existe_comp(cid):
@@ -26,3 +27,5 @@ def existe_comp(cid):
 			return True
 		else:
 			False
+
+
