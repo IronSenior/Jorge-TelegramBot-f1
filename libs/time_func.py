@@ -1,6 +1,6 @@
 # -*-coding: utf-8 -*-
 import json
-from comp_func import db_path
+from constantes import db_path
 '''
 Deberíamos dejar db_path definido en un archivo concreto e importarlo
 en el resto, tenerlo en varios por separado es un coñazo

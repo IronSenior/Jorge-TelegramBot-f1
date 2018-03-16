@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 import json
 import os
+from constantes import db_path
 
 #Obviamente este path es provisional y en cada equivo debe cambiar (se pondrá el definitivo en el servidor)
-db_path = "/home/pepe/Escritorio/Mis proyectos/Jorge-telegram-bot/DB/"
 
 def create_comp(cid):
 	#La función creará una carpeta donde se van a almacenar todos los datos de esa competición
@@ -26,6 +26,6 @@ def existe_comp(cid):
 		if cid in comps:
 			return True
 		else:
-			False
+			return False
 
 
