@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 import json
 import os
+import shutil
 from constantes import db_path
 
 #Obviamente este path es provisional y en cada equivo debe cambiar (se pondrá el definitivo en el servidor)
 
 def create_comp(cid):
-	#Primero agragará la competición al archivo comps.json
+	#Primero agregará la competición al archivo comps.json
 	with open('%scomps.json'%(db_path), 'r') as jsonfile:
 		comps = json.load(jsonfile)
 		comps["comps"].append(cid)
@@ -36,4 +37,18 @@ def existe_comp(cid):
 		else:
 			return False
 
-
+def delete_comp(cid):
+	#Esta función borra la competición que se haya creado en ese grupo
+	#Para ello busca en el bucle la id de la lista del comps.json que coincide con la id del chat
+	#Cuando la encuentra borra ese elemento de la lista
+	with open('%scomps.json'%(db_path), 'r') as compsfile:
+		comps = json.load(compsfile)
+		for com_id in comps["comps"]:
+			if cid == int(com_id):
+				comps["comps"].remove(com_id)
+	#Una vez borrada la id sobreescribe el diccionario de python en el comps.json
+	with open('%scomps.json'%(db_path), 'w') as compsfile:
+		json.dump(comps, compsfile)
+	#Por ultimo borra la carpeta que se crea cuando se crea una competicion y su contenido
+	path = db_path + str(cid)
+	shutil.rmtree(path)
