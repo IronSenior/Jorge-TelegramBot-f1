@@ -21,6 +21,7 @@ def join_in(uid, uname, cid):
 	return True
 
 def existe_user(uid, cid):
+	#la función comprueba si ese usuario se ha unido o no a la competición anterirormente
 	path = db_path + str(cid)
 	with open('%s/players.json' % (path), 'r') as f:
 		comp = json.load(f)
