@@ -8,14 +8,14 @@ en el resto, tenerlo en varios por separado es un coñazo
 
 
 def add_time(cid, uid, time):
-    path = db_path + cid
+    path = db_path + str(cid)
     if is_time(time):
-        with open('%splayers.json' % path, 'r') as outfile:
+        with open('%s/players.json' % path, 'r') as outfile:
             comp = json.load(outfile)
             players = comp['player_list']
             if uid not in players:
                 return False
-        with open('%splayers.json' % path, 'w') as outfile:
+        with open('%s/players.json' % path, 'w') as outfile:
             comp[str(uid)]['lr_time'] = time
             json.dump(comp, outfile)
         return True

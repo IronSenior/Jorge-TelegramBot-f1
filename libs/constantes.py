@@ -1,3 +1,1 @@
-
-
-db_path = "/home/adoenlunnae/Desktop/code/jorgebot/DB/"
+db_path = "/home/pepe/Escritorio/Mis proyectos/Jorge-telegram-bot/DB/"

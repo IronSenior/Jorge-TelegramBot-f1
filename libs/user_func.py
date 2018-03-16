@@ -11,10 +11,22 @@ def join_in(uid, uname, cid):
 	with open('%s/players.json' % (path), 'r') as f:
 		comp = json.load(f)
 		players = comp['player_list']
-		if uid not in players:
-			players.append(uid)
-		else:
-			return False
+		players.append(uid)
+
+		data = {str(uid) : {'name': uname, 'position': 0, 'lr_time': "None"}}
+		comp.update(data)
+
 	with open('%s/players.json' % (path), 'w') as f:
 		json.dump(comp, f)
 	return True
+
+def existe_user(uid, cid):
+	path = db_path + str(cid)
+	with open('%s/players.json' % (path), 'r') as f:
+		comp = json.load(f)
+		players = comp['player_list']
+
+		if uid in players:
+			return True
+		else:
+			return False

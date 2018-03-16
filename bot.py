@@ -4,6 +4,7 @@ import telebot
 
 from libs import comp_func as comp
 from libs import user_func as user
+from libs import time_func as timef
 import private as tk
 import time
 import random
@@ -42,7 +43,7 @@ def join_in(m):
     cid = m.chat.id
     uname = m.from_user.first_name
     if comp.existe_comp(cid):
-        if user.existe_user(cid, uid):
+        if user.existe_user(uid, cid):
             message = uname + " ya se habia unido antes"
             send(m, message)
         else:
@@ -61,6 +62,21 @@ def dl_competition(m):
         send(m, "La competición ha sido eliminada")
     else:
         send(m, "No existe competición todavía")
+
+
+@bot.message_handler(commands=['time'])
+def time(m):
+    cid = m.chat.id
+    uid = m.from_user.id
+    uname = m.from_user.first_name
+    time = m.text.split()[1]
+
+    if timef.add_time(cid, uid, time):
+        msg = uname + " ha agregado su tiempo"
+        send(m, msg)
+
+    else:
+        send(m, "No se ha podido agregar el tiempo [Error de formato]")
 
 
 bot.polling()
