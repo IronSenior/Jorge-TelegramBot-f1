@@ -38,6 +38,6 @@ def is_time(time):
 def to_milis(time):
     # Recibe una cadena en formato M:S:mm y devuelve un número entero de milésimas.
     # La usaremos para comparar con más comodidad.
-    time.split(':')
-    milis = 1000*(60*int(time[0])+int(time[1]))+int(time[3])
+    lst = time.split(':')
+    milis = 1000*(60*int(lst[0])+int(lst[1]))+int(lst[2])
     return milis
