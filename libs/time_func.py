@@ -19,6 +19,8 @@ def add_time(cid, uid, time):
             comp[str(uid)]['lr_time'] = time
             json.dump(comp, outfile)
         return True
+    else:
+        return False
 
 
 def is_time(time):
