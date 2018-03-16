@@ -1,7 +1,7 @@
 # -*-coding: utf-8 -*-
+# !/usr/bin/env python
 import json
 from constantes import db_path
-
 
 
 def add_time(cid, uid, time):
@@ -33,3 +33,11 @@ def is_time(time):
         return lst[0].isdigit() & lst[1].isdigit() & lst[2].isdigit()
     else:
         return False
+
+
+def to_milis(time):
+    # Recibe una cadena en formato M:S:mm y devuelve un número entero de milésimas.
+    # La usaremos para comparar con más comodidad.
+    time.split(':')
+    milis = 1000*(60*int(time[0])+int(time[1]))+int(time[3])
+    return milis
