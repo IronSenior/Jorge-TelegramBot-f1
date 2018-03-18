@@ -58,8 +58,7 @@ def join_in(m):
 def dl_competition(m):
     cid = m.chat.id
     if comp.existe_comp(cid):
-        
-        comp.dl_competition(cid)
+        comp.delete_comp(cid)
         send(m, "La competición ha sido eliminada")
     else:
         send(m, "No existe competición todavía")
@@ -70,6 +69,7 @@ def time(m):
     cid = m.chat.id
     uid = m.from_user.id
     uname = m.from_user.first_name
+    #time = telebot.util.extract_arguments(m.text)
     time = m.text.split()[1]
 
     if timef.add_time(cid, uid, time):
