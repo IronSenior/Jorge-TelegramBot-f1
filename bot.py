@@ -58,6 +58,7 @@ def join_in(m):
 def dl_competition(m):
     cid = m.chat.id
     if comp.existe_comp(cid):
+        
         comp.dl_competition(cid)
         send(m, "La competición ha sido eliminada")
     else:
