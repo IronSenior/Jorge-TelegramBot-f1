@@ -17,7 +17,16 @@ def join_in(uid, uname, cid):
 		comp.update(data)
 
 	with open('%s/players.json' % (path), 'w') as f:
-		json.dump(comp, f)
+		json.dump(comp, f, indent=3)
+
+	with open('%s/rank.json' % path, 'r') as rank:
+		rankd=json.load(rank)
+		data = {uid: 0}
+		rankd.update(data)
+	with open('%s/rank.json', 'w') as rank:
+		json.dump(rankd, rank, indent=3)
+
+
 	return True
 
 def existe_user(uid, cid):

@@ -14,7 +14,7 @@ def create_comp(cid):
 		comps["comps"].append(cid)
 
 	with open('%scomps.json'%(db_path), 'w') as outfile:
-		json.dump(comps, outfile)
+		json.dump(comps, outfile, indent=3)
 
 	#La función creará una carpeta donde se van a almacenar todos los datos de esa competición
 	#El path será la carpeta DB que hay en el mismo directorio que bot.py
@@ -25,7 +25,11 @@ def create_comp(cid):
 	with open('%s/players.json'%(path), 'w') as outfile:
 		data = { 'player_list' : [],}
 
-		json.dump(data, outfile)
+		json.dump(data, outfile, indent=3)
+
+	with open('%s/rank.json' %path, 'w') as outfile:
+		data={'ranking': []}
+		json.dump(data, outfile, indent=3)
 
 def existe_comp(cid):
 	#La función comprueba si hay una competición creada en ese grupo
@@ -48,7 +52,7 @@ def delete_comp(cid):
 				comps["comps"].remove(com_id)
 	#Una vez borrada la id sobreescribe el diccionario de python en el comps.json
 	with open('%scomps.json'%(db_path), 'w') as compsfile:
-		json.dump(comps, compsfile)
+		json.dump(comps, compsfile, indent=3)
 	#Por ultimo borra la carpeta que se crea cuando se crea una competicion y su contenido
 	path = db_path + str(cid)
 	shutil.rmtree(path)
