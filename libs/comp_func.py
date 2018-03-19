@@ -28,7 +28,7 @@ def create_comp(cid):
 		json.dump(data, outfile, indent=3)
 
 	with open('%s/rank.json' %path, 'w') as outfile:
-		data={'ranking': []}
+		data={}
 		json.dump(data, outfile, indent=3)
 
 def existe_comp(cid):

@@ -2,6 +2,7 @@
 # !/usr/bin/env python
 import json
 from constantes import db_path
+import aux
 
 
 def add_time(cid, uid, time):
@@ -17,7 +18,7 @@ def add_time(cid, uid, time):
                 return False
         with open('%s/players.json' % path, 'w') as outfile:
             comp[str(uid)]['lr_time'] = time
-            json.dump(comp, outfile)
+            json.dump(comp, outfile, indent=3)
         # Modifica el campo correspondiente al tiempo del usuario en el archivo
         # cargado y lo vuelca en el JSON.
         return True
@@ -41,3 +42,31 @@ def to_milis(time):
     lst = time.split(':')
     milis = 1000*(60*int(lst[0])+int(lst[1]))+int(lst[2])
     return milis
+
+
+def list_times(cid):
+    # Devuelve una lista con los tiempos(ordenados) y un diccionario tiempo:id
+    # Lo hacemos así porque los diccionarios no tienen índices.
+    with open('%s/players.json' % (db_path+str(cid)), 'r')as rankfile:
+        data = json.load(rankfile)
+        dct = {}
+        lst = []
+        for key in data:
+            if key.isdigit():
+                dct.update({to_milis(data[key]['lr_time']): key})
+                lst.append(to_milis(data[key]['lr_time']))
+    lst = aux.sort(lst)
+    return lst, dct
+
+
+def give_points(cid):
+    points = (25, 18, 15, 12, 10, 8, 6, 4, 2, 1)  # Puntuaciones según posición
+    lst, dct = list_times(cid)
+    with open('%s/rank.json' % (db_path+str(cid)), 'r') as rankfile:
+        data = json.load(rankfile)
+        for time in lst:
+            index = lst.index(time)  # Al coger el índice estamos estableciendo el orden
+            if index <= 10:
+                data[dct[time]] += points[index]
+    with open('%s/rank.json' % (db_path+str(cid)), 'w') as rankfile:
+        json.dump(data, rankfile, indent=3)
