@@ -23,7 +23,7 @@ def join_in(uid, uname, cid):
 		rankd=json.load(rank)
 		data = {uid: 0}
 		rankd.update(data)
-	with open('%s/rank.json', 'w') as rank:
+	with open('%s/rank.json' %path, 'w') as rank:
 		json.dump(rankd, rank, indent=3)
 
 
