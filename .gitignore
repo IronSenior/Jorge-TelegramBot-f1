@@ -1,0 +1,8 @@
+venv/
+test.py
+private.py
+constantes.py
+.git
+.idea
+DB/
+*.pyc
