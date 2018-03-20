@@ -31,6 +31,10 @@ def create_comp(cid):
 		data={}
 		json.dump(data, outfile, indent=3)
 
+	with open('%s/race.json' %path, 'w') as outfile:
+		data={"race": 1}
+		json.dump(data, outfile, indent=3)
+
 def existe_comp(cid):
 	#La función comprueba si hay una competición creada en ese grupo
 	#Para ello revisa las ids de las competiciones que hay creadas
@@ -56,3 +60,19 @@ def delete_comp(cid):
 	#Por ultimo borra la carpeta que se crea cuando se crea una competicion y su contenido
 	path = db_path + str(cid)
 	shutil.rmtree(path)
+
+
+def get_race_bycomp(cid):
+	path = db_path + str(cid)
+	with open('%s/race.json'%(path), 'r') as racefile:
+		races = json.load(racefile)
+		race = races['race']
+
+	with open('%sgp.json'%(db_path), 'r') as gpfile:
+		gp = json.load(gpfile)
+
+		actual_gp = gp[str(race)]
+
+		return actual_gp
+
+

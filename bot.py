@@ -20,6 +20,10 @@ bot = telebot.TeleBot(token)
 def send(m, message_text):
     bot.send_message(m.chat.id, message_text)
 
+def sendMarkdownMessage(cid, message_text):
+    bot.send_message(cid, message_text, parse_mode="Markdown")
+
+
 #Crea una competicion
 @bot.message_handler(commands=['st_comp'])
 def new_competition(m):
@@ -78,6 +82,24 @@ def time(m):
 
     else:
         send(m, "No se ha podido agregar el tiempo [Error de formato]")
+
+@bot.message_handler(commands=['next_race'])
+def next_race(m):
+    cid = m.chat.id
+
+    race = comp.get_race_bycomp(cid)
+
+    sendMarkdownMessage(cid, """
+        🎟 *Próxima Carrera* 🎟
+
+        *Nombre: * {}
+        *Vueltas: * {}
+
+    """.format(race['nombre'], race['long']))
+
+    bot.send_photo(cid, "%s"%(race['image']))
+
+
 
 
 bot.polling()
