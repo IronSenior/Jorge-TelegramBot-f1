@@ -83,6 +83,7 @@ def time(m):
     else:
         send(m, "No se ha podido agregar el tiempo [Error de formato]")
 
+
 @bot.message_handler(commands=['next_race'])
 def next_race(m):
     cid = m.chat.id
