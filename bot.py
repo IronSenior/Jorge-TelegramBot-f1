@@ -100,7 +100,10 @@ def next_race(m):
 
     bot.send_photo(cid, "%s"%(race['image']))
 
-
-
+@bot.message_handler(commands=['pen'])
+def penalizar(m):
+    cid = m.chat.id
+    uid = m.from_user.username
+    
 
 bot.polling()
