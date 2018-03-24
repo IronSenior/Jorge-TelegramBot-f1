@@ -78,7 +78,7 @@ def get_race_bycomp(cid):
 
 
 def plus_race_bycomp(cid):
-	#Devuelve la información del circuito que toca correr en ese grupo
+	#Suma 1 al circuito de la competición
 	path = db_path + str(cid)
 	with open('%s/race.json'%(path), 'r') as racefile:
 		races = json.load(racefile)
