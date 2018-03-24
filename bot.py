@@ -56,7 +56,7 @@ def join_in(m):
             send(m, message)
     else:
         send(m, "No hay competición en este grupo todavía")
-
+        send(m, "Puedes empezar una con /st_comp")
 
 @bot.message_handler(commands=['dl_comp'])
 def dl_competition(m):
@@ -66,7 +66,7 @@ def dl_competition(m):
         send(m, "La competición ha sido eliminada")
     else:
         send(m, "No existe competición todavía")
-
+        send(m, "Puedes empezar una con /st_comp")
 
 @bot.message_handler(commands=['time'])
 def time(m):
@@ -75,32 +75,49 @@ def time(m):
     uname = m.from_user.first_name
     #time = telebot.util.extract_arguments(m.text)
     time = m.text.split()[1]
+    if comp.existe_comp(cid):
+        if timef.add_time(cid, uid, time):
+            msg = uname + " ha agregado su tiempo"
+            send(m, msg)
 
-    if timef.add_time(cid, uid, time):
-        msg = uname + " ha agregado su tiempo"
-        send(m, msg)
-
+        else:
+            send(m, "No se ha podido agregar el tiempo [Error de formato]")
     else:
-        send(m, "No se ha podido agregar el tiempo [Error de formato]")
+        send(m, "No hay ninguna competición en este grupo")
+        send(m, "Puedes empezar una con /st_comp")
 
 
 @bot.message_handler(commands=['next_race'])
 def next_race(m):
     cid = m.chat.id
 
-    race = comp.get_race_bycomp(cid)
+    if comp.existe_comp(cid):
+        race = comp.get_race_bycomp(cid)
 
-    sendMarkdownMessage(cid, """
-        🎟 *Próxima Carrera* 🎟
+        sendMarkdownMessage(cid, """
+            🎟 *Próxima Carrera* 🎟
 
-        *Nombre: * {}
-        *Vueltas: * {}
+            *Nombre: * {}
+            *Vueltas: * {}
 
-    """.format(race['nombre'], race['long']))
+        """.format(race['nombre'], race['long']))
 
-    bot.send_photo(cid, "%s"%(race['image']))
+        bot.send_photo(cid, "%s"%(race['image']))
 
+    else:
+        send(m, "No hay ninguna competición en este grupo")
+        send(m, "Puedes empezar una con /st_comp")
 
+@bot.message_handler(commands=['end_race'])
+def end_race(m):
+    cid = m.chat.id
+
+    if comp.existe_comp(cid):
+        #code
+
+    else:
+        send(m, "No hay ninguna competición en este grupo")
+        send(m, "Puedes empezar una con /st_comp")
 
 
 bot.polling()
