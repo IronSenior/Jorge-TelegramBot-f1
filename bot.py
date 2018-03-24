@@ -113,7 +113,10 @@ def end_race(m):
     cid = m.chat.id
 
     if comp.existe_comp(cid):
-        #code
+        send(m, "La carrera ha terminado")
+        #Aqui sumaremos los puntos y todos los tiempos se pondran en 0
+        comp.plus_race_bycomp(cid)
+        next_race(m)
 
     else:
         send(m, "No hay ninguna competición en este grupo")
