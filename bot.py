@@ -87,7 +87,7 @@ def time(m):
         send(m, "Puedes empezar una con /st_comp")
 
 
-@bot.message_handler(commands=['next_race'])
+@bot.message_handler(commands=['race_info'])
 def next_race(m):
     cid = m.chat.id
 
