@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import os
 import json
 
@@ -30,7 +32,7 @@ def inicio_bot():
 		json.dump(data, outfile)
 
 	with open('./DB/gp.json', 'w') as outfile:
-		json.dump(gp, outfile)
+		json.dump(gp, outfile, ensure_ascii=False, indent=3)
 
 	print "Carpeta y archivo de inicio creados"
 
