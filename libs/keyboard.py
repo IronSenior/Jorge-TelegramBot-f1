@@ -2,6 +2,8 @@ from telebot import *
 import json
 from constantes import db_path
 
+#Esta función contiene la estructura del mensaje que acompaña al teclado de elección de equipo
+#En ella se llama a team_members una vez por cada equipo y devuelve el mensaje completo
 def keyboard_message(cid):
     mensaje = '''Estos son los equipos de la competicion y los pilotos de cada uno de ellos:
     Mercedes:%s
@@ -25,6 +27,8 @@ def keyboard_message(cid):
                     team_members(cid, "marussia"))
     return mensaje
 
+
+#Esta función devuelve una cadena con los usernames que hay en cada equipo separados por un espacio
 def team_members(cid, team):
     path = db_path + str(cid)
     pilotos = ""
@@ -36,8 +40,10 @@ def team_members(cid, team):
     return pilotos
 
 
+#Nombre del teclado, se llama a él desde bot.py
 keyboard_team = types.InlineKeyboardMarkup()
 
+#Añade los botones con su texto, y el valor que devuelve cada botón cuando es clickado
 keyboard_team.add(types.InlineKeyboardButton("Mercedes", callback_data = "mercedes"),
                  types.InlineKeyboardButton("Red Bull", callback_data = "red_bull"),
                  types.InlineKeyboardButton("Williams", callback_data = "williams"),

@@ -37,24 +37,30 @@ def new_competition(m):
         else:
             comp.create_comp(cid)
             send(m, "La competición se ha creado")
+            #Manda el mensaje de los equipos con el teclado cuando se crea la competición
             bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard_team)
     else:
             print "Se produjo un fallo E:001"
 
+#Maneja las respuestas del teclado, entra cada vez que alguien clicka una opción
 @bot.callback_query_handler(func = lambda team: team.data in ["mercedes", "red_bull", "williams", "ferrari", "mclaren", "force_india", "toro_rosso", "lotus", "sauber", "marussia"])
 def join_in(team):
     cid = team.message.chat.id
     uid = team.from_user.id
     mid = team.message.message_id
     unick = team.from_user.username
-    uteam = team.data
+    uteam = team.data #Equivale al valor de la lista que se corresponde con el botón clickado
     if comp.existe_comp(cid):
         if user.existe_user(uid, cid):
             if user.team_full(cid, uteam):
                 message = "Ese equipo esta lleno " + unick + ", elige uno con menos de 2 pilotos"
                 bot.send_message(team.message.chat.id, message)
             else:
+                #Si el usuario que clicka ya está en la competición y el equipo
+                #que selecciona no está lleno, lo cambia de equipo
                 if(user.change_team(cid, uid, uteam)):
+                    #Actualiza el mensaje que acompaña al teclado, su estructura está
+                    #en libs/keyboard.py
                     bot.edit_message_text(keyboard_message(cid), cid, mid, reply_markup = keyboard_team)
         else:
             if user.team_full(cid, uteam):
@@ -62,7 +68,11 @@ def join_in(team):
                 bot.send_message(team.message.chat.id, message)
 
             else:
+                #Para un usuario nuevo, que selecciona un equipo que no está lleno
+                #mete los campos necesarios en la base de datos
                 user.join_in(cid, uid, unick, uteam)
+                #Actualiza el mensaje que acompaña al teclado, su estructura está
+                #en libs/keyboard.py
                 bot.edit_message_text(keyboard_message(cid), cid, mid, reply_markup = keyboard_team)
     else:
         send(m, "No hay competición en este grupo todavía")

@@ -29,6 +29,9 @@ def join_in(cid, uid, unick, uteam):
 	return True
 
 
+#Esta función devuelve False cuando se le intenta asignar a un piloto
+#el equipo en el que ya está metido. Devuelve True cuando no es el mismo
+#y en ese, cambia el campo 'team' del json por el nuevo equipo seleccionado
 def change_team(cid, uid, uteam):
 	path = db_path + str(cid)
 	with open('%s/players.json' % (path), 'r') as f:
@@ -42,6 +45,9 @@ def change_team(cid, uid, uteam):
 		json.dump(players, f, indent = 3)
 		return True
 
+
+#Esta función devuelve True cuando hay 2 pilotos en un mismo equipo (equipo lleno)
+#y False en el caso contrario (equipo con 1 o 2 huecos libres)
 def team_full(cid, uteam):
 	path = db_path + str(cid)
 	n_pilotos = 0
