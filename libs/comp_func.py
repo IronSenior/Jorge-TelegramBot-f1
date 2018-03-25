@@ -77,3 +77,12 @@ def get_race_bycomp(cid):
 		return actual_gp
 
 
+def plus_race_bycomp(cid):
+	#Suma 1 al circuito de la competición
+	path = db_path + str(cid)
+	with open('%s/race.json'%(path), 'r') as racefile:
+		races = json.load(racefile)
+		races['race'] += 1
+
+	with open('%s/race.json'%(path), 'w') as outfile:
+		json.dump(races, outfile)
