@@ -65,13 +65,8 @@ def join_in(team):
                 user.join_in(cid, uid, unick, uteam)
                 bot.edit_message_text(keyboard_message(cid), cid, mid, reply_markup = keyboard_team)
     else:
-<<<<<<< HEAD
-        bot.send_message(team.message.chat.id, "No hay competición en este grupo todavía")
-
-=======
         send(m, "No hay competición en este grupo todavía")
         send(m, "Puedes empezar una con /st_comp")
->>>>>>> ec5ded135748b9f40c27cf630726ab4aa2731359
 
 @bot.message_handler(commands=['dl_comp'])
 def dl_competition(m):

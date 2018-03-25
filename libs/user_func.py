@@ -68,9 +68,7 @@ def existe_user(uid, cid):
 			return True
 		else:
 			return False
-<<<<<<< HEAD
-=======
-			
+
 
 def penal_func(penal, uid):
 
@@ -109,4 +107,3 @@ def penal_func(penal, uid):
             comp[str(uid)]['lr_time'] = time
             json.dump(comp, outfile, indent=3)
         # Añade la penalización al tiempo marcado por el jugador y se vuelca en el JSON.
->>>>>>> ec5ded135748b9f40c27cf630726ab4aa2731359
