@@ -5,6 +5,7 @@ import telebot
 from libs import comp_func as comp
 from libs import user_func as user
 from libs import time_func as timef
+from libs.keyboard import *
 import private as tk
 import time
 import random
@@ -36,26 +37,35 @@ def new_competition(m):
         else:
             comp.create_comp(cid)
             send(m, "La competición se ha creado")
+            bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard_team)
     else:
             print "Se produjo un fallo E:001"
 
-
-
-@bot.message_handler(commands=['join_in'])
-def join_in(m):
-    uid = m.from_user.id
-    cid = m.chat.id
-    uname = m.from_user.first_name
+@bot.callback_query_handler(func = lambda team: team.data in ["mercedes", "red_bull", "williams", "ferrari", "mclaren", "force_india", "toro_rosso", "lotus", "sauber", "marussia"])
+def join_in(team):
+    cid = team.message.chat.id
+    uid = team.from_user.id
+    mid = team.message.message_id
+    unick = team.from_user.username
+    uteam = team.data
     if comp.existe_comp(cid):
         if user.existe_user(uid, cid):
-            message = uname + " ya se habia unido antes"
-            send(m, message)
+            if user.team_full(cid, uteam):
+                message = "Ese equipo esta lleno " + unick + ", elige uno con menos de 2 pilotos"
+                bot.send_message(team.message.chat.id, message)
+            else:
+                if(user.change_team(cid, uid, uteam)):
+                    bot.edit_message_text(keyboard_message(cid), cid, mid, reply_markup = keyboard_team)
         else:
-            user.join_in(uid, uname, cid)
-            message = uname + " se ha unido con exito"
-            send(m, message)
+            if user.team_full(cid, uteam):
+                message = "Ese equipo esta lleno " + unick + ", elige uno con menos de 2 pilotos"
+                bot.send_message(team.message.chat.id, message)
+
+            else:
+                user.join_in(cid, uid, unick, uteam)
+                bot.edit_message_text(keyboard_message(cid), cid, mid, reply_markup = keyboard_team)
     else:
-        send(m, "No hay competición en este grupo todavía")
+        bot.send_message(team.message.chat.id, "No hay competición en este grupo todavía")
 
 
 @bot.message_handler(commands=['dl_comp'])
