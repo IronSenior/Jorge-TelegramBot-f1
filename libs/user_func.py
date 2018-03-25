@@ -105,7 +105,7 @@ def penal_func(penal, uid):
 
         if(len(str(segundos))==1):
             time = str(minutes) + ":" + "0" + str(seconds) + ":" + str(miles)
-        else
+        else:
             time = str(minutes) + ":" + str(seconds) + ":" + str(miles)
 
 

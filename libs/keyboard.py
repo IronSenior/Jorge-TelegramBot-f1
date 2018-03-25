@@ -1,8 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from telebot import *
 import json
 from constantes import db_path
 
-#Esta función contiene la estructura del mensaje que acompaña al teclado de elección de equipo
+#Esta función contiene la estructura del mensaje con el que va el teclado de elección de equipo.
 #En ella se llama a team_members una vez por cada equipo y devuelve el mensaje completo
 def keyboard_message(cid):
     mensaje = '''Estos son los equipos de la competicion y los pilotos de cada uno de ellos:
