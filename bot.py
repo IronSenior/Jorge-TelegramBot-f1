@@ -5,6 +5,7 @@ import telebot
 from libs import comp_func as comp
 from libs import user_func as user
 from libs import time_func as timef
+from libs.keyboard import *
 import private as tk
 import time
 import random
@@ -27,7 +28,10 @@ def sendMarkdownMessage(cid, message_text):
 #Crea una competicion
 @bot.message_handler(commands=['st_comp'])
 def new_competition(m):
+    #Este comando crea la competición y manda el seleccionador de equipos
     cid = m.chat.id #Chat_id
+
+    #Para comprobar si el chat es un grupo o no, miramos su id (los grupos tienen id negativa)
     if cid > 0:
         send(m, "Error!! Debes crear la competición en un grupo")
     elif cid < 0:
@@ -36,37 +40,57 @@ def new_competition(m):
         else:
             comp.create_comp(cid)
             send(m, "La competición se ha creado")
+            #Manda el mensaje de los equipos con el teclado cuando se crea la competición
+            bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard_team)
     else:
             print "Se produjo un fallo E:001"
 
-
-
-@bot.message_handler(commands=['join_in'])
-def join_in(m):
-    uid = m.from_user.id
-    cid = m.chat.id
-    uname = m.from_user.first_name
+#Maneja las respuestas del teclado, entra cada vez que alguien clicka una opción
+@bot.callback_query_handler(func = lambda team: team.data in ["mercedes", "red_bull", "williams", "ferrari", "mclaren", "force_india", "toro_rosso", "lotus", "sauber", "marussia"])
+def join_in(team):
+    cid = team.message.chat.id
+    uid = team.from_user.id
+    mid = team.message.message_id
+    unick = team.from_user.username
+    uteam = team.data #Equivale al valor de la lista que se corresponde con el botón clickado
     if comp.existe_comp(cid):
         if user.existe_user(uid, cid):
-            message = uname + " ya se habia unido antes"
-            send(m, message)
+            if user.team_full(cid, uteam):
+                message = "Ese equipo esta lleno " + unick + ", elige uno con menos de 2 pilotos"
+                bot.send_message(team.message.chat.id, message)
+            else:
+                #Si el usuario que clicka ya está en la competición y el equipo
+                #que selecciona no está lleno, lo cambia de equipo
+                if(user.change_team(cid, uid, uteam)):
+                    #Actualiza el mensaje que acompaña al teclado, su estructura está
+                    #en libs/keyboard.py
+                    bot.edit_message_text(keyboard_message(cid), cid, mid, reply_markup = keyboard_team)
         else:
-            user.join_in(uid, uname, cid)
-            message = uname + " se ha unido con exito"
-            send(m, message)
+            if user.team_full(cid, uteam):
+                message = "Ese equipo esta lleno " + unick + ", elige uno con menos de 2 pilotos"
+                bot.send_message(team.message.chat.id, message)
+
+            else:
+                #Para un usuario nuevo, que selecciona un equipo que no está lleno
+                #mete los campos necesarios en la base de datos
+                user.join_in(cid, uid, unick, uteam)
+                #Actualiza el mensaje que acompaña al teclado, su estructura está
+                #en libs/keyboard.py
+                bot.edit_message_text(keyboard_message(cid), cid, mid, reply_markup = keyboard_team)
     else:
         send(m, "No hay competición en este grupo todavía")
-
+        send(m, "Puedes empezar una con /st_comp")
 
 @bot.message_handler(commands=['dl_comp'])
 def dl_competition(m):
+    #Este comando permite eliminar una competición
     cid = m.chat.id
     if comp.existe_comp(cid):
         comp.delete_comp(cid)
         send(m, "La competición ha sido eliminada")
     else:
         send(m, "No existe competición todavía")
-
+        send(m, "Puedes empezar una con /st_comp")
 
 @bot.message_handler(commands=['time'])
 def time(m):
@@ -75,32 +99,59 @@ def time(m):
     uname = m.from_user.first_name
     #time = telebot.util.extract_arguments(m.text)
     time = m.text.split()[1]
+    if comp.existe_comp(cid):
+        if timef.add_time(cid, uid, time):
+            msg = uname + " ha agregado su tiempo"
+            send(m, msg)
 
-    if timef.add_time(cid, uid, time):
-        msg = uname + " ha agregado su tiempo"
-        send(m, msg)
-
+        else:
+            send(m, "No se ha podido agregar el tiempo [Error de formato]")
     else:
-        send(m, "No se ha podido agregar el tiempo [Error de formato]")
+        send(m, "No hay ninguna competición en este grupo")
+        send(m, "Puedes empezar una con /st_comp")
 
 
-@bot.message_handler(commands=['next_race'])
+@bot.message_handler(commands=['race_info'])
 def next_race(m):
     cid = m.chat.id
 
-    race = comp.get_race_bycomp(cid)
+    if comp.existe_comp(cid):
+        race = comp.get_race_bycomp(cid)
 
-    sendMarkdownMessage(cid, """
-        🎟 *Próxima Carrera* 🎟
+        sendMarkdownMessage(cid, """
+            🎟 *Próxima Carrera* 🎟
 
-        *Nombre: * {}
-        *Vueltas: * {}
+            *Nombre: * {}
+            *Vueltas: * {}
 
-    """.format(race['nombre'], race['long']))
+        """.format(race['nombre'], race['long']))
 
-    bot.send_photo(cid, "%s"%(race['image']))
+        bot.send_photo(cid, "%s"%(race['image']))
 
+    else:
+        send(m, "No hay ninguna competición en este grupo")
+        send(m, "Puedes empezar una con /st_comp")
 
+@bot.message_handler(commands=['end_race'])
+def end_race(m):
+    #Este comando es uno de los mas importantes
+    #Dará por terminada la carrera, sumará los puntos e imprimirá la clasificación
+    #También dejará todos los tiempos a 0 de nuevo
+    cid = m.chat.id
+
+    if comp.existe_comp(cid):
+        send(m, "La carrera ha terminado")
+        #Aqui sumaremos los puntos y todos los tiempos se pondran en 0
+        comp.plus_race_bycomp(cid)
+        next_race(m)
+
+    else:
+        send(m, "No hay ninguna competición en este grupo")
+        send(m, "Puedes empezar una con /st_comp")
+
+@bot.message_handler(commands=['pen'])
+def pen(m):
+    #Este comando te permite penalizar a un jugador
 
 
 bot.polling()

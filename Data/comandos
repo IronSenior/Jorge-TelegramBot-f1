@@ -1,4 +1,5 @@
 st_comp - Empezar una competición
 dl_comp - Eliminar la competición
-join_in - Unirte a la competición
+race_info - Información sobre la próxima carrera
+end_race - Termina la carrera y suma los puntos
 time - Agregar el tiempo de tu ultima carrera
