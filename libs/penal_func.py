@@ -6,6 +6,12 @@ import aux
 
 
 def penal_func(penal, uid):
+        # Primero se comprueba que el usuario que va a penalizar sea el admin.
+	with open('%s/admins.json' % (path), 'r') as outfile:
+		comp = json.load(outfile)
+		admin = comp['admin_id']
+		if uid not in admin:
+			return False
 
         with open('%s/players.json' % path, 'r') as outfile:
             comp = json.load(outfile)
