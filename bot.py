@@ -90,8 +90,13 @@ def dl_competition(m):
     uid = m.from_user.id
 
     if comp.existe_comp(cid):
-        comp.delete_comp(cid, uid)
-        send(m, "La competición ha sido eliminada")
+        if user.is_admin(cid, uid):
+            comp.delete_comp(cid, uid)
+            send(m, "La competición ha sido eliminada")
+        else:
+            message = uname + " no tiene permisos para realizar esa operación"
+            send(m, message)
+
     else:
         send(m, "No existe competición todavía")
         send(m, "Puedes empezar una con /st_comp")
@@ -117,6 +122,7 @@ def time(m):
 
 @bot.message_handler(commands=['race_info'])
 def next_race(m):
+    #Este comando nos dará información sobre la próxima carrera
     cid = m.chat.id
 
     if comp.existe_comp(cid):
@@ -142,12 +148,19 @@ def end_race(m):
     #Dará por terminada la carrera, sumará los puntos e imprimirá la clasificación
     #También dejará todos los tiempos a 0 de nuevo
     cid = m.chat.id
+    uid = m.from_user.id
+    uname = m.from_user.username
 
     if comp.existe_comp(cid):
-        send(m, "La carrera ha terminado")
-        #Aqui sumaremos los puntos y todos los tiempos se pondran en 0
-        comp.plus_race_bycomp(cid)
-        next_race(m)
+        if user.is_admin(cid, uid):
+            send(m, "La carrera ha terminado")
+            #Aqui sumaremos los puntos y todos los tiempos se pondran en 0
+            comp.plus_race_bycomp(cid)
+            next_race(m)
+        else:
+            message = uname + " no tiene permisos para realizar esa operación"
+            send(m, message)
+
 
     else:
         send(m, "No hay ninguna competición en este grupo")

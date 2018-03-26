@@ -6,7 +6,7 @@ from constantes import db_path
 
 
 def join_in(cid, uid, unick, uteam):
-	# Esta función permite al usuario unirse a la competición que hay creada en el grupo
+	# Permite al usuario unirse a la competición que hay creada en el grupo
 	path = db_path + str(cid)
 	with open('%s/players.json' % (path), 'r') as f:
 		comp = json.load(f)
@@ -112,3 +112,15 @@ def penal_func(penal, uid):
             comp[str(uid)]['lr_time'] = time
             json.dump(comp, outfile, indent=3)
         # Añade la penalización al tiempo marcado por el jugador y se vuelca en el JSON.
+
+def is_admin(cid, uid):
+	#Comprueba si el usuario es euno de los administradores de la carrera
+	path = db_path + str(cid)
+	with open('%s/admins.json' % (path), 'r') as outfile:
+		comp = json.load(outfile)
+		admin = comp['admin_id']
+
+		if uid in admin:
+			return True
+		else:
+			return False

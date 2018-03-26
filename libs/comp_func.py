@@ -53,13 +53,6 @@ def delete_comp(cid, uid):
 	#Esta función borra la competición que se haya creado en ese grupo
 	#Para ello busca en el bucle la id de la lista del comps.json que coincide con la id del chat
 	#Cuando la encuentra borra ese elemento de la lista
-	#Previamente a la eliminación se comprueba que el usuario que la está borrando es el admin.
-	with open('%s/admins.json' % (path), 'r') as outfile:
-		comp = json.load(outfile)
-		admin = comp['admin_id']
-		if uid not in admin:
-			return False
-
 	with open('%scomps.json'%(db_path), 'r') as compsfile:
 		comps = json.load(compsfile)
 		for com_id in comps["comps"]:
