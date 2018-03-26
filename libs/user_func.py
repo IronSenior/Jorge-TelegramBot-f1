@@ -77,7 +77,6 @@ def existe_user(uid, cid):
 
 
 def penal_func(penal, uid):
-
         with open('%s/players.json' % path, 'r') as outfile:
             comp = json.load(outfile)
             players = comp['player_list']
