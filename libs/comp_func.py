@@ -35,6 +35,10 @@ def create_comp(cid):
 		data={"race": 1}
 		json.dump(data, outfile, indent=3)
 
+	with open('%s/admins.json' %path, 'w') as outfile:
+		data={"admin_id": []}
+		json.dump(data, outfile, indent=3)
+
 def existe_comp(cid):
 	#La función comprueba si hay una competición creada en ese grupo
 	#Para ello revisa las ids de las competiciones que hay creadas
@@ -82,9 +86,6 @@ def get_race_bycomp(cid):
 		actual_gp = gp[str(race)]
 
 		return actual_gp
-<<<<<<< HEAD
-=======
-
 
 def plus_race_bycomp(cid):
 	#Suma 1 al circuito de la competición
@@ -95,4 +96,15 @@ def plus_race_bycomp(cid):
 
 	with open('%s/race.json'%(path), 'w') as outfile:
 		json.dump(races, outfile)
->>>>>>> b9d9dbcd3a439cbb50feac9c9c534532f18e5e8a
+
+def add_admin(cid, uid):
+	# Esta función añade como admin en la competición al creador de la misma.
+	path = db_path + str(cid)
+	with open('%s/admins.json' % (path), 'r') as outfile:
+		comp = json.load(outfile)
+		admin = comp['admin_id']
+		admin.append(uid)
+
+	with open('%s/admins.json' % (path), 'w') as outfile:
+		json.dump(comp, outfile, indent=3)
+	# El admin de la competición será el único capaz de borrar la misma y de terminar las carreras en curso o penalizar.

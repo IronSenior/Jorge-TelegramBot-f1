@@ -30,6 +30,7 @@ def sendMarkdownMessage(cid, message_text):
 def new_competition(m):
     #Este comando crea la competición y manda el seleccionador de equipos
     cid = m.chat.id #Chat_id
+    uid = m.from_user.id
 
     #Para comprobar si el chat es un grupo o no, miramos su id (los grupos tienen id negativa)
     if cid > 0:
@@ -39,6 +40,7 @@ def new_competition(m):
             send(m, "Ya hay una competción en este grupo")
         else:
             comp.create_comp(cid)
+            comp.add_admin(cid, uid)
             send(m, "La competición se ha creado")
             #Manda el mensaje de los equipos con el teclado cuando se crea la competición
             bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard_team)
@@ -85,8 +87,10 @@ def join_in(team):
 def dl_competition(m):
     #Este comando permite eliminar una competición
     cid = m.chat.id
+    uid = m.from_user.id
+
     if comp.existe_comp(cid):
-        comp.delete_comp(cid)
+        comp.delete_comp(cid, uid)
         send(m, "La competición ha sido eliminada")
     else:
         send(m, "No existe competición todavía")
@@ -151,6 +155,7 @@ def end_race(m):
 
 @bot.message_handler(commands=['pen'])
 def pen(m):
+    pass
     #Este comando te permite penalizar a un jugador
 
 
