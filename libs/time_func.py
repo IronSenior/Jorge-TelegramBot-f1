@@ -7,7 +7,8 @@ import aux
 
 def add_time(cid, uid, time):
     path = db_path + str(cid)
-    if is_time(time):
+    time = time.toupper()
+    if is_time(time) or time == 'DSQ':
         # Comprueba si la cadena está en el formato adecuado.
         with open('%s/players.json' % path, 'r') as outfile:
             comp = json.load(outfile)
@@ -17,7 +18,7 @@ def add_time(cid, uid, time):
             if uid not in players:
                 return False
         with open('%s/players.json' % path, 'w') as outfile:
-            comp[str(uid)]['lr_time'] = time
+            comp[str(uid)]['lr_time'] = time()
             json.dump(comp, outfile, indent=3)
         # Modifica el campo correspondiente al tiempo del usuario en el archivo
         # cargado y lo vuelca en el JSON.
@@ -52,7 +53,7 @@ def list_times(cid):
         dct = {}
         lst = []
         for key in data:
-            if key.isdigit():
+            if key.isdigit() and data[key]['lr_time'] != 'DSQ':
                 dct.update({to_milis(data[key]['lr_time']): key})
                 lst.append(to_milis(data[key]['lr_time']))
     lst = aux.sort(lst)
