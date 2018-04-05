@@ -18,7 +18,7 @@ def add_time(cid, uid, time):
             if uid not in players:
                 return False
         with open('%s/players.json' % path, 'w') as outfile:
-            comp[str(uid)]['lr_time'] = time()
+            comp[str(uid)]['lr_time'] = time
             json.dump(comp, outfile, indent=3)
         # Modifica el campo correspondiente al tiempo del usuario en el archivo
         # cargado y lo vuelca en el JSON.
