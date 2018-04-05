@@ -114,7 +114,7 @@ def time(m):
             send(m, msg)
 
         else:
-            send(m, "No se ha podido agregar el tiempo [Error de formato]")
+            send(m, "No se ha podido agregar el tiempo [Error de formato, mm:ss:mil]")
     else:
         send(m, "No hay ninguna competición en este grupo")
         send(m, "Puedes empezar una con /st_comp")
