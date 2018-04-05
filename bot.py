@@ -88,7 +88,7 @@ def dl_competition(m):
     #Este comando permite eliminar una competición
     cid = m.chat.id
     uid = m.from_user.id
-
+    uname = m.from_user.first_name
     if comp.existe_comp(cid):
         if user.is_admin(cid, uid):
             comp.delete_comp(cid, uid)
@@ -106,7 +106,7 @@ def time(m):
     cid = m.chat.id
     uid = m.from_user.id
     uname = m.from_user.first_name
-    #time = telebot.util.extract_arguments(m.text)
+    # time = telebot.util.extract_arguments(m.text)
     time = m.text.split()[1]
     if comp.existe_comp(cid):
         if timef.add_time(cid, uid, time):
