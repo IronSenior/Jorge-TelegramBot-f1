@@ -157,7 +157,11 @@ def end_race(m):
     if comp.existe_comp(cid):
         if user.is_admin(cid, uid):
             send(m, "La carrera ha terminado")
-            #Aqui sumaremos los puntos y todos los tiempos se pondran en 0
+            #Comprobamos si todos han metido su tiempo (Falta)
+            #Damos los puntos a los jugadores
+            timef.give_points(cid)
+            #Manda un mensaje con el podium (Falta)
+            #Imprime la clasificación de la competición (Falta)
             comp.plus_race_bycomp(cid)
             next_race(m)
         else:
@@ -168,8 +172,9 @@ def end_race(m):
     else:
         send(m, "No hay ninguna competición en este grupo")
         send(m, "Puedes empezar una con /st_comp")
-
-@bot.message_handler(commands=['my_comps']):
+        
+'''
+@bot.message_handler(commands=['my_comps'])
 def my_comps(m):
     #Primer paso de la herramienta que permite administrar una competición
     cid = m.chat.id
@@ -185,6 +190,6 @@ def my_comps(m):
     else:
         send(m, "Ese comando solo puede usarse desde un chat privado")
 
-
+'''
 
 bot.polling()

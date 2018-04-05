@@ -7,7 +7,7 @@ import aux
 
 def add_time(cid, uid, time):
     path = db_path + str(cid)
-    time = time.toupper()
+    time = time.upper()
     if is_time(time) or time == 'DSQ':
         # Comprueba si la cadena está en el formato adecuado.
         with open('%s/players.json' % path, 'r') as outfile:
@@ -18,7 +18,7 @@ def add_time(cid, uid, time):
             if uid not in players:
                 return False
         with open('%s/players.json' % path, 'w') as outfile:
-            comp[str(uid)]['lr_time'] = time()
+            comp[str(uid)]['lr_time'] = time
             json.dump(comp, outfile, indent=3)
         # Modifica el campo correspondiente al tiempo del usuario en el archivo
         # cargado y lo vuelca en el JSON.
