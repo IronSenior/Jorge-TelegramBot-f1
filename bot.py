@@ -80,8 +80,8 @@ def join_in(team):
                 #en libs/keyboard.py
                 bot.edit_message_text(keyboard_message(cid), cid, mid, reply_markup = keyboard_team)
     else:
-        send(m, "No hay competición en este grupo todavía")
-        send(m, "Puedes empezar una con /st_comp")
+        bot.send_message(team.message.chat.id, "No hay competición en este grupo todavía")
+        bot.send_message(team.message.chat.id, "Puedes empezar una con /st_comp")
 
 @bot.message_handler(commands=['dl_comp'])
 def dl_competition(m):
@@ -143,7 +143,7 @@ def next_race(m):
 def penalizar(m):
     cid = m.chat.id
     uid = m.from_user.username
-    
+
 
 @bot.message_handler(commands=['end_race'])
 def end_race(m):
@@ -169,7 +169,7 @@ def end_race(m):
         send(m, "No hay ninguna competición en este grupo")
         send(m, "Puedes empezar una con /st_comp")
 
-@bot.message_handler(commands=['my_comps']):
+@bot.message_handler(commands=['my_comps'])
 def my_comps(m):
     #Primer paso de la herramienta que permite administrar una competición
     cid = m.chat.id
@@ -180,7 +180,7 @@ def my_comps(m):
         comps = my_comps(uid) #Hay que hacerla (Devuelve las competiciones de las cuales es admin)
         keyboard = get_keyboardAdmin(comps) #Hay que hacerla (Devuelve un teclado con las competiciones)
         bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard)
-        #Habrá que esperar una respuesta y seguir 
+        #Habrá que esperar una respuesta y seguir
 
     else:
         send(m, "Ese comando solo puede usarse desde un chat privado")
