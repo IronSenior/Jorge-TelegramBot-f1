@@ -7,7 +7,7 @@ import aux
 
 def add_time(cid, uid, time):
     path = db_path + str(cid)
-    time = time.toupper()
+    time = time.upper()
     if is_time(time) or time == 'DSQ':
         # Comprueba si la cadena está en el formato adecuado.
         with open('%s/players.json' % path, 'r') as outfile:
