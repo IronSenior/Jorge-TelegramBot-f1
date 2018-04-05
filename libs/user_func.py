@@ -13,7 +13,7 @@ def join_in(cid, uid, unick, uteam):
 		players = comp['player_list']
 		players.append(uid)
 
-		data = {str(uid) : {'name': unick, 'team': uteam, 'position': 0, 'lr_time': "None"}}
+		data = {str(uid) : {'name': unick, 'team': uteam, 'lr_time': "None"}}
 		comp.update(data)
 
 	with open('%s/players.json' % (path), 'w') as f:
