@@ -30,6 +30,7 @@ def sendMarkdownMessage(cid, message_text):
 def new_competition(m):
     #Este comando crea la competición y manda el seleccionador de equipos
     cid = m.chat.id #Chat_id
+    cname = m.chat.title #Nombre del chat
     uid = m.from_user.id
 
     #Para comprobar si el chat es un grupo o no, miramos su id (los grupos tienen id negativa)
@@ -40,10 +41,13 @@ def new_competition(m):
             send(m, "Ya hay una competción en este grupo")
         else:
             comp.create_comp(cid)
-            comp.add_admin(cid, uid)
             send(m, "La competición se ha creado")
             #Manda el mensaje de los equipos con el teclado cuando se crea la competición
             bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard_team)
+            #Establece al creador de la competición como administrador de la misma
+            comp.add_admin(cid, uid, cname)
+            #Abre el chat privado con el admin
+            bot.send_message(uid, "Desde este chat, podrás administrar tus competiciones usando /my_comps")
     else:
             print "Se produjo un fallo E:001"
 
@@ -80,15 +84,15 @@ def join_in(team):
                 #en libs/keyboard.py
                 bot.edit_message_text(keyboard_message(cid), cid, mid, reply_markup = keyboard_team)
     else:
-        send(m, "No hay competición en este grupo todavía")
-        send(m, "Puedes empezar una con /st_comp")
+        bot.send_message(team.message.chat.id, "No hay competición en este grupo todavía")
+        bot.send_message(team.message.chat.id, "Puedes empezar una con /st_comp")
 
 @bot.message_handler(commands=['dl_comp'])
 def dl_competition(m):
     #Este comando permite eliminar una competición
     cid = m.chat.id
     uid = m.from_user.id
-
+    uname = m.from_user.first_name
     if comp.existe_comp(cid):
         if user.is_admin(cid, uid):
             comp.delete_comp(cid, uid)
@@ -106,7 +110,7 @@ def time(m):
     cid = m.chat.id
     uid = m.from_user.id
     uname = m.from_user.first_name
-    #time = telebot.util.extract_arguments(m.text)
+    # time = telebot.util.extract_arguments(m.text)
     time = m.text.split()[1]
     if comp.existe_comp(cid):
         if timef.add_time(cid, uid, time):
@@ -143,7 +147,7 @@ def next_race(m):
 def penalizar(m):
     cid = m.chat.id
     uid = m.from_user.username
-    
+
 
 @bot.message_handler(commands=['end_race'])
 def end_race(m):
@@ -172,8 +176,8 @@ def end_race(m):
     else:
         send(m, "No hay ninguna competición en este grupo")
         send(m, "Puedes empezar una con /st_comp")
-    
-'''
+
+
 @bot.message_handler(commands=['my_comps'])
 def my_comps(m):
     #Primer paso de la herramienta que permite administrar una competición
@@ -181,15 +185,14 @@ def my_comps(m):
     uid = m.from_user.id
 
     if cid > 0:
-        if have_comps(uid): #Hay que hacerla (Mira si es admin de alguna competicion)
-        comps = my_comps(uid) #Hay que hacerla (Devuelve las competiciones de las cuales es admin)
-        keyboard = get_keyboardAdmin(comps) #Hay que hacerla (Devuelve un teclado con las competiciones)
-        bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard)
-        #Habrá que esperar una respuesta y seguir 
-
+        if user.have_comps(uid): #Hay que hacerla (Mira si es admin de alguna competicion)
+            keyboard_comps = get_keyboardAdmin(uid) #Hay que hacerla (Devuelve un teclado con las competiciones)
+            bot.send_message(cid, "Selecciona la competción a administrar", reply_markup = keyboard_comps)
+            #Habrá que esperar una respuesta y seguir
+        else:
+            send(m, "No eres administrador de ninguna competición")
     else:
         send(m, "Ese comando solo puede usarse desde un chat privado")
 
-'''
 
 bot.polling()

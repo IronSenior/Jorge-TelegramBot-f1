@@ -90,8 +90,9 @@ def plus_race_bycomp(cid):
 	with open('%s/race.json'%(path), 'w') as outfile:
 		json.dump(races, outfile)
 
-def add_admin(cid, uid):
+def add_admin(cid, uid, cname):
 	# Esta función añade como admin en la competición al creador de la misma.
+	#Primeramente añade el administrador al json de la competición
 	path = db_path + str(cid)
 	with open('%s/admins.json' % (path), 'r') as outfile:
 		comp = json.load(outfile)
@@ -100,4 +101,17 @@ def add_admin(cid, uid):
 
 	with open('%s/admins.json' % (path), 'w') as outfile:
 		json.dump(comp, outfile, indent=3)
+
+	#Ahora se añade la id del admin al json general donde se almacenan todos los
+	#administradores con sus respectivas competiciones y nombres de grupo
+	with open('%sall_admins.json' % (db_path), 'r') as outfile:
+		all_admins = json.load(outfile)
+		if uid not in all_admins:
+			all_admins.update ({uid : {cid : cname}})
+		if uid in all_admins:
+			uid = str(uid)
+			all_admins[uid].update ({cid : name})
+
+	with open('%sall_admins.json' % (db_path), 'w') as outfile:
+		json.dump(all_admins, outfile, indent = 3)
 	# El admin de la competición será el único capaz de borrar la misma y de terminar las carreras en curso o penalizar.

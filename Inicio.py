@@ -34,6 +34,10 @@ def inicio_bot():
 	with open('./DB/gp.json', 'w') as outfile:
 		json.dump(gp, outfile, ensure_ascii=False, indent=3)
 
+	with open('./DB/all_admins.json', 'w') as outfile:
+		data = {}
+		json.dump(data, outfile)
+
 	print "Carpeta y archivo de inicio creados"
 
 inicio_bot()

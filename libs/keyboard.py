@@ -29,7 +29,6 @@ def keyboard_message(cid):
                     team_members(cid, "marussia"))
     return mensaje
 
-
 #Esta función devuelve una cadena con los usernames que hay en cada equipo separados por un espacio
 def team_members(cid, team):
     path = db_path + str(cid)
@@ -57,3 +56,18 @@ keyboard_team.add(types.InlineKeyboardButton("Mercedes", callback_data = "merced
                  types.InlineKeyboardButton("Sauber", callback_data = "sauber"),
                  types.InlineKeyboardButton("Marussia", callback_data = "marussia")
 )
+
+
+def get_keyboardAdmin(uid):
+    #Esta función devuelve un teclado
+    keyboard_comps = types.ReplyKeyboardMarkup()
+    with open ("%sall_admins.json" % db_path, 'r') as alladminsfile:
+        uid = str(uid)
+        all_admins = json.load (alladminsfile)
+        for userid in all_admins:
+            for chatid in all_admins[userid]:
+                chatid = str(chatid)
+                print chatid
+                chat_name = all_admins[uid][chatid]
+                keyboard_comps.add(types.KeyboardButton("%s" % chat_name))
+    return keyboard_comps
