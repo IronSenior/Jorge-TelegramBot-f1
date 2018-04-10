@@ -71,3 +71,30 @@ def get_keyboardAdmin(uid):
                 chat_name = all_admins[uid][chatid]
                 keyboard_comps.add(types.KeyboardButton("%s" % chat_name))
     return keyboard_comps
+
+def get_keyboardOptions():
+    keyboard_opts = types.ReplyKeyboardMarkup()
+    opt=('Penalizar', 'Cambiar nombre', 'Eliminar competición')
+    for option in opt:
+        keyboard_opts.add(types.KeyboardButton('%s' % option))
+    return keyboard_opts
+
+def get_keyboardPlayers(cid):
+    keyboard_players = types.ReplyKeyboardMarkup()
+    path = db_path + str(cid)
+    with open('%s/players.json' % path, 'r') as playersfile:
+        data = json.load(playersfile)
+        id_list = [data['player_list']]
+        for pid in id_list:
+            keyboard_players.add(types.KeyboardButton('%s' % data[str(pid)]['name']))
+    return keyboard_players
+
+
+def get_keyboardPenal():
+    keyboard_penal = types.ReplyKeyboardMarkup()
+    penals = ['2', '5', '10', '15']
+    for elem in penals:
+        keyboard_penal.add(types.KeyboardButton(elem))
+    return keyboard_penal
+
+
