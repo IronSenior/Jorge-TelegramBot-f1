@@ -76,6 +76,18 @@ def existe_user(uid, cid):
 			return False
 
 
+def is_admin(cid, uid):
+	# Comprueba si el usuario es uno de los administradores de la carrera
+	path = db_path + str(cid)
+	with open('%s/admins.json' % (path), 'r') as outfile:
+		comp = json.load(outfile)
+		admin = comp['admin_id']
+
+		if uid in admin:
+			return True
+		else:
+			return False
+
 def penal_func(penal, uid):
         with open('%s/players.json' % path, 'r') as outfile:
             comp = json.load(outfile)
