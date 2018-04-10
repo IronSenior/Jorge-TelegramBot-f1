@@ -185,9 +185,10 @@ def my_comps(m):
     uid = m.from_user.id
 
     if cid > 0:
-        if user.have_comps(uid): #Hay que hacerla (Mira si es admin de alguna competicion)
-            keyboard_comps = get_keyboardAdmin(uid) #Hay que hacerla (Devuelve un teclado con las competiciones)
+        if user.have_comps(uid): #Mira si es admin de alguna competicion
+            keyboard_comps = get_keyboardAdmin(uid) #Devuelve un teclado con las competiciones
             bot.send_message(cid, "Selecciona la competción a administrar", reply_markup = keyboard_comps)
+            
             #Habrá que esperar una respuesta y seguir
         else:
             send(m, "No eres administrador de ninguna competición")

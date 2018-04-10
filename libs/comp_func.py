@@ -106,11 +106,13 @@ def add_admin(cid, uid, cname):
 	#administradores con sus respectivas competiciones y nombres de grupo
 	with open('%sall_admins.json' % (db_path), 'r') as outfile:
 		all_admins = json.load(outfile)
+		uid = str(uid)
+		#If y Elif permite que si un mismo usuario es administrador de varios chats,
+		#en el json se guarden varios cid y cname para el mismo uid
 		if uid not in all_admins:
 			all_admins.update ({uid : {cid : cname}})
-		if uid in all_admins:
-			uid = str(uid)
-			all_admins[uid].update ({cid : name})
+		elif uid in all_admins:
+			all_admins[uid].update ({cid : cname})
 
 	with open('%sall_admins.json' % (db_path), 'w') as outfile:
 		json.dump(all_admins, outfile, indent = 3)
