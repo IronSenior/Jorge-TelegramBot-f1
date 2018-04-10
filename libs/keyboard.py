@@ -60,27 +60,26 @@ keyboard_team.add(types.InlineKeyboardButton("Mercedes", callback_data = "merced
 
 def get_keyboardAdmin(uid):
     #Esta función devuelve un teclado
-    keyboard_comps = types.ReplyKeyboardMarkup()
+    keyboard_comps = types.ReplyKeyboardMarkup(one_time_keyboard=True)
     with open ("%sall_admins.json" % db_path, 'r') as alladminsfile:
         uid = str(uid)
         all_admins = json.load (alladminsfile)
         for userid in all_admins:
             for chatid in all_admins[userid]:
                 chatid = str(chatid)
-                print chatid
                 chat_name = all_admins[uid][chatid]
                 keyboard_comps.add(types.KeyboardButton("%s" % chat_name))
     return keyboard_comps
 
 def get_keyboardOptions():
-    keyboard_opts = types.ReplyKeyboardMarkup()
+    keyboard_opts = types.ReplyKeyboardMarkup(one_time_keyboard=True)
     opt=('Penalizar', 'Cambiar nombre', 'Eliminar competición')
     for option in opt:
         keyboard_opts.add(types.KeyboardButton('%s' % option))
     return keyboard_opts
 
 def get_keyboardPlayers(cid):
-    keyboard_players = types.ReplyKeyboardMarkup()
+    keyboard_players = types.ReplyKeyboardMarkup(one_time_keyboard=True)
     path = db_path + str(cid)
     with open('%s/players.json' % path, 'r') as playersfile:
         data = json.load(playersfile)
@@ -91,10 +90,8 @@ def get_keyboardPlayers(cid):
 
 
 def get_keyboardPenal():
-    keyboard_penal = types.ReplyKeyboardMarkup()
+    keyboard_penal = types.ReplyKeyboardMarkup(one_time_keyboard=True)
     penals = ['2', '5', '10', '15']
     for elem in penals:
         keyboard_penal.add(types.KeyboardButton(elem))
     return keyboard_penal
-
-
