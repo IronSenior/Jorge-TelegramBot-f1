@@ -82,7 +82,6 @@ def is_admin(cid, uid):
 	with open('%s/admins.json' % (path), 'r') as outfile:
 		comp = json.load(outfile)
 		admin = comp['admin_id']
-
 		if uid in admin:
 			return True
 		else:
