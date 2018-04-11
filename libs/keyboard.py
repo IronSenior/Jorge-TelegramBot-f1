@@ -61,7 +61,7 @@ keyboard_team.add(types.InlineKeyboardButton("Mercedes", callback_data = "merced
 def get_keyboardAdmin(uid):
     #Esta función devuelve un teclado
     keyboard_comps = types.InlineKeyboardMarkup()
-    with open ("%sall_admins.json" % db_path, 'r') as alladminsfile:
+    with open("%sall_admins.json" % db_path, 'r') as alladminsfile:
         uid = str(uid)
         all_admins = json.load (alladminsfile)
         for userid in all_admins:
