@@ -53,18 +53,23 @@ def delete_comp(cid, uid):
 	#Esta función borra la competición que se haya creado en ese grupo
 	#Para ello busca en el bucle la id de la lista del comps.json que coincide con la id del chat
 	#Cuando la encuentra borra ese elemento de la lista
-	with open('%scomps.json'%(db_path), 'r') as compsfile:
-		comps = json.load(compsfile)
-		for com_id in comps["comps"]:
-			if cid == int(com_id):
-				comps["comps"].remove(com_id)
+    with open('%scomps.json'%db_path, 'r') as compsfile:
+        comps = json.load(compsfile)
+        for com_id in comps["comps"]:
+            if cid == int(com_id):
+                comps["comps"].remove(com_id)
 	#Una vez borrada la id sobreescribe el diccionario de python en el comps.json
-	with open('%scomps.json'%(db_path), 'w') as compsfile:
-		json.dump(comps, compsfile, indent=3)
-	#Por ultimo borra la carpeta que se crea cuando se crea una competicion y su contenido
-	path = db_path + str(cid)
-	shutil.rmtree(path)
+    with open('%scomps.json'%db_path, 'w') as compsfile:
+        json.dump(comps, compsfile, indent=3)
 
+    with open('%sall_admins.json' % db_path, 'r') as adminfile:
+        admins = json.load(adminfile)
+        del admins[str(uid)][str(cid)]
+
+    with open('%sall_admins.json' % db_path, 'w') as adminfile:
+        json.dump(admins, adminfile, indent=3)
+    path = db_path + str(cid)
+    shutil.rmtree(path)
 
 def get_race_bycomp(cid):
 	#Devuelve la información del circuito que toca correr en ese grupo
