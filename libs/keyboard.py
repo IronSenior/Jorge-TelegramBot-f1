@@ -60,20 +60,19 @@ keyboard_team.add(types.InlineKeyboardButton("Mercedes", callback_data = "merced
 
 def get_keyboardAdmin(uid):
     #Esta función devuelve un teclado
-    keyboard_comps = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+    keyboard_comps = types.InlineKeyboardMarkup()
     with open ("%sall_admins.json" % db_path, 'r') as alladminsfile:
         uid = str(uid)
         all_admins = json.load (alladminsfile)
         for userid in all_admins:
             for chatid in all_admins[userid]:
-                chatid = str(chatid)
-                chat_name = all_admins[uid][chatid]
-                keyboard_comps.add(types.KeyboardButton("%s" % chat_name))
+                chat_name = all_admins[uid][str(chatid)]
+                keyboard_comps.add(types.InlineKeyboardButton("%s" % chat_name, callback_data=int(chatid)))
     return keyboard_comps
 
 def get_keyboardOptions():
     keyboard_opts = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-    opt=('Penalizar', 'Cambiar nombre', 'Eliminar competición')
+    opt = ['Penalizar', 'Cambiar nombre', 'Eliminar competición']
     for option in opt:
         keyboard_opts.add(types.KeyboardButton('%s' % option))
     return keyboard_opts
