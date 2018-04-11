@@ -96,8 +96,7 @@ def add_admin(cid, uid, cname):
 	path = db_path + str(cid)
 	with open('%s/admins.json' % (path), 'r') as outfile:
 		comp = json.load(outfile)
-		admin = comp['admin_id']
-		admin.append(uid)
+		comp['admin_id'].append(uid)
 
 	with open('%s/admins.json' % (path), 'w') as outfile:
 		json.dump(comp, outfile, indent=3)
@@ -117,3 +116,8 @@ def add_admin(cid, uid, cname):
 	with open('%sall_admins.json' % (db_path), 'w') as outfile:
 		json.dump(all_admins, outfile, indent = 3)
 	# El admin de la competición será el único capaz de borrar la misma y de terminar las carreras en curso o penalizar.
+
+def comp_list():
+	with open('%scomps.json' % db_path, 'r') as compfile:
+		lst = json.load(compfile)['comps']
+	return lst
