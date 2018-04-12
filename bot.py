@@ -194,9 +194,8 @@ def my_comps(m):
         send(m, "Ese comando solo puede usarse desde un chat privado")
 
 
-@bot.callback_query_handler(func=lambda callback: comp.existe_comp(callback.data))
+@bot.callback_query_handler(func=lambda callback: comp.existe_comp(int(callback.data)))
 def send_options(callback):
-    print(callback.data)
     cid = callback.message.chat.id
     keyboard_opts = get_keyboardOptions()
     bot.send_message(cid, "Elige una opción", reply_markup=keyboard_opts)
