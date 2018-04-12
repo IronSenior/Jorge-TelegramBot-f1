@@ -32,22 +32,22 @@ def new_competition(m):
     cid = m.chat.id #Chat_id
     cname = m.chat.title #Nombre del chat
     uid = m.from_user.id
-
     #Para comprobar si el chat es un grupo o no, miramos su id (los grupos tienen id negativa)
     if cid > 0:
-        send(m, "Error!! Debes crear la competición en un grupo")
+        send(m, "Error!! Debes crear la competicion en un grupo")
     elif cid < 0:
         if comp.existe_comp(cid):
-            send(m, "Ya hay una competción en este grupo")
+            send(m, "Ya hay una competicion en este grupo")
         else:
             comp.create_comp(cid)
-            send(m, "La competición se ha creado")
+            send(m, "La competicion se ha creado")
             #Manda el mensaje de los equipos con el teclado cuando se crea la competición
             bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard_team)
+            bot.pinChatMessage (cid, keyboard_message(cid))
             #Establece al creador de la competición como administrador de la misma
             comp.add_admin(cid, uid, cname)
             #Abre el chat privado con el admin
-            bot.send_message(uid, "Desde este chat, podrás administrar tus competiciones usando /my_comps")
+            bot.send_message(uid, "Desde este chat, podras administrar tus competiciones usando /my_comps")
     else:
             print "Se produjo un fallo E:001"
 
@@ -84,7 +84,7 @@ def join_in(team):
                 #en libs/keyboard.py
                 bot.edit_message_text(keyboard_message(cid), cid, mid, reply_markup = keyboard_team)
     else:
-        bot.send_message(team.message.chat.id, "No hay competición en este grupo todavía")
+        bot.send_message(team.message.chat.id, "No hay competición en este grupo todavia")
         bot.send_message(team.message.chat.id, "Puedes empezar una con /st_comp")
 
 @bot.message_handler(commands=['dl_comp'])
@@ -98,7 +98,7 @@ def dl_competition(m):
             comp.delete_comp(cid, uid)
             send(m, "La competición ha sido eliminada")
         else:
-            message = uname + " no tiene permisos para realizar esa operación"
+            message = uname + " no tiene permisos para realizar esa operacion"
             send(m, message)
 
     else:
@@ -169,7 +169,7 @@ def end_race(m):
             comp.plus_race_bycomp(cid)
             next_race(m)
         else:
-            message = uname + " no tiene permisos para realizar esa operación"
+            message = uname + " no tiene permisos para realizar esa operacion"
             send(m, message)
 
 
@@ -187,11 +187,11 @@ def my_comps(m):
     if cid > 0:
         if user.have_comps(uid): #Mira si es admin de alguna competicion
             keyboard_comps = get_keyboardAdmin(uid) #Devuelve un teclado con las competiciones
-            bot.send_message(cid, "Selecciona la competción a administrar", reply_markup = keyboard_comps)
-            
+            bot.send_message(cid, "Selecciona la competicion a administrar", reply_markup = keyboard_comps)
+
             #Habrá que esperar una respuesta y seguir
         else:
-            send(m, "No eres administrador de ninguna competición")
+            send(m, "No eres administrador de ninguna competicion")
     else:
         send(m, "Ese comando solo puede usarse desde un chat privado")
 
