@@ -83,7 +83,7 @@ def join_in(team):
                 #en libs/keyboard.py
                 bot.edit_message_text(keyboard_message(cid), cid, mid, reply_markup = keyboard_team)
     else:
-        bot.send_message(team.message.chat.id, "No hay competición en este grupo todavia")
+        bot.send_message(team.message.chat.id, "No hay competicion en este grupo todavia")
         bot.send_message(team.message.chat.id, "Puedes empezar una con /st_comp")
 
 @bot.message_handler(commands=['dl_comp'])
@@ -95,13 +95,13 @@ def dl_competition(m):
     if comp.existe_comp(cid):
         if user.is_admin(cid, uid):
             comp.delete_comp(cid, uid)
-            send(m, "La competición ha sido eliminada")
+            send(m, "La competicion ha sido eliminada")
         else:
             message = uname + " no tiene permisos para realizar esa operacion"
             send(m, message)
 
     else:
-        send(m, "No existe competición todavía")
+        send(m, "No existe competicion todavía")
         send(m, "Puedes empezar una con /st_comp")
 
 @bot.message_handler(commands=['time'])
@@ -172,7 +172,7 @@ def end_race(m):
 
 
     else:
-        send(m, "No hay ninguna competición en este grupo")
+        send(m, "No hay ninguna competicion en este grupo")
         send(m, "Puedes empezar una con /st_comp")
 
 
@@ -198,7 +198,7 @@ def my_comps(m):
 def send_options(callback):
     cid = callback.message.chat.id
     keyboard_opts = get_keyboardOptions()
-    bot.send_message(cid, "Elige una opción", reply_markup=keyboard_opts)
+    bot.send_message(cid, "Elige una opcion", reply_markup=keyboard_opts)
 
 
 bot.polling()
