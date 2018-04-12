@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import telebot
-
 from libs import comp_func as comp
 from libs import user_func as user
 from libs import time_func as timef
@@ -116,7 +115,6 @@ def time(m):
         if timef.add_time(cid, uid, time):
             msg = uname + " ha agregado su tiempo"
             send(m, msg)
-
         else:
             send(m, "No se ha podido agregar el tiempo [Error de formato]")
     else:
@@ -194,6 +192,14 @@ def my_comps(m):
             send(m, "No eres administrador de ninguna competicion")
     else:
         send(m, "Ese comando solo puede usarse desde un chat privado")
+
+
+@bot.callback_query_handler(func=lambda callback: comp.existe_comp(callback.data))
+def send_options(callback):
+    print(callback.data)
+    cid = callback.message.chat.id
+    keyboard_opts = get_keyboardOptions()
+    bot.send_message(cid, "Elige una opción", reply_markup=keyboard_opts)
 
 
 bot.polling()
