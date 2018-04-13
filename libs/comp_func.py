@@ -125,4 +125,7 @@ def add_admin(cid, uid, cname):
 def comp_list():
 	with open('%scomps.json' % db_path, 'r') as compfile:
 		lst = json.load(compfile)['comps']
-	return lst
+		ret = []
+		for item in lst:
+			ret.append(str(item))
+	return ret

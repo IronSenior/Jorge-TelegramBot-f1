@@ -19,3 +19,17 @@ def sort(array):
         return sort(less)+equal+sort(greater)
     else:
         return array
+
+
+def to_list(arg, l):
+    lst = arg.split('/')
+    long = (len(lst) == l)
+    ret = []
+    if long:
+        ret = lst
+    return ret
+
+
+def is_to_list(string, l):
+    lst = string.split('/')
+    return len(lst) == l
