@@ -4,6 +4,7 @@ import telebot
 from libs import comp_func as comp
 from libs import user_func as user
 from libs import time_func as timef
+from libs import aux
 from libs.keyboard import *
 import private as tk
 import time
@@ -41,8 +42,8 @@ def new_competition(m):
             comp.create_comp(cid)
             send(m, "La competicion se ha creado")
             #Manda el mensaje de los equipos con el teclado cuando se crea la competición
-            bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard_team)
-            bot.pinChatMessage (cid, keyboard_message(cid))
+            bot.send_message(cid, keyboard_message(cid), reply_markup=keyboard_team)
+            #bot.pinChatMessage(cid, keyboard_message(cid))
             #Establece al creador de la competición como administrador de la misma
             comp.add_admin(cid, uid, cname)
             #Abre el chat privado con el admin
@@ -185,7 +186,7 @@ def my_comps(m):
     if cid > 0:
         if user.have_comps(uid): #Mira si es admin de alguna competicion
             keyboard_comps = get_keyboardAdmin(uid) #Devuelve un teclado con las competiciones
-            bot.send_message(cid, "Selecciona la competicion a administrar", reply_markup = keyboard_comps)
+            bot.send_message(cid, "Selecciona la competicion a administrar", reply_markup=keyboard_comps)
 
             #Habrá que esperar una respuesta y seguir
         else:
@@ -194,11 +195,28 @@ def my_comps(m):
         send(m, "Ese comando solo puede usarse desde un chat privado")
 
 
-@bot.callback_query_handler(func=lambda callback: comp.existe_comp(int(callback.data)))
+@bot.callback_query_handler(func=lambda callback: callback.data in comp.comp_list())
 def send_options(callback):
     cid = callback.message.chat.id
-    keyboard_opts = get_keyboardOptions()
+    compid = callback.data
+    keyboard_opts = get_keyboardOptions(compid)
+    bot.delete_message(cid, callback.message.message_id)
     bot.send_message(cid, "Elige una opcion", reply_markup=keyboard_opts)
 
+
+@bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 2)
+                                                  and aux.to_list(callback.data, 2)[0] == 'Penalizar')
+def send_penal(callback):
+    compid = aux.to_list(callback.data, 2)[1]
+    cid = callback.message.chat.id
+    keyboard_players = get_keyboardPlayers(compid)
+    bot.delete_message(cid, callback.message.message_id)
+    bot.send_message(cid, 'Elige a quién penalizar', reply_markup=keyboard_players)
+
+
+@bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 3))
+def penalizar(callback):
+    penal, compid, pid = aux.to_list(callback.data)[0:3]
+    user.penal_func()
 
 bot.polling()
