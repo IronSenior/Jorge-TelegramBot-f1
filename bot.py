@@ -170,14 +170,17 @@ def end_race(m):
 
     if comp.existe_comp(cid):
         if user.is_admin(cid, uid):
-            send(m, "La carrera ha terminado")
-            #Comprobamos si todos han metido su tiempo (Falta)
-            #Damos los puntos a los jugadores
-            timef.give_points(cid)
-            #Manda un mensaje con el podium (Falta)
-            #Imprime la clasificación de la competición (Falta)
-            comp.plus_race_bycomp(cid)
-            next_race(m)
+            #Comprobamos que todos los juagdores han metido su tiempo
+        	if timef.all_times_defined(cid):
+        		send(m, "La carrera ha terminado")
+	            #Damos los puntos a los jugadores
+	            timef.give_points(cid)
+	            #Manda un mensaje con el podium (Falta)
+	            #Imprime la clasificación de la competición (Falta)
+	            comp.plus_race_bycomp(cid)
+	            next_race(m)
+	        else:
+	        	send(m, "Todos los pilotos no han metido su tiempo, pueden hacerlo con /time <M:S:MM>")
         else:
             message = uname + " no tiene permisos para realizar esa operacion"
             send(m, message)
