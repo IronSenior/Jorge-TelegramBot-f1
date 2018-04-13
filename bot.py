@@ -154,41 +154,50 @@ def next_race(m):
         bot.send_photo(cid, "%s"%(race['image']))
 
 
+@bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 2)
+                                                  and aux.to_list(callback.data, 2)[0][1:].isdigit())
+def send_penal(callback):
+    args = aux.to_list(callback.data, 2)
+    compid, pid = args[0], args[1]
+    cid = callback.message.chat.id
+    bot.delete_message(cid, callback.message.message_id)
+    keyboard_penal = get_keyboardPenal(compid, pid)
+    bot.send_message(cid, 'Elige la penalizacion', reply_markup=keyboard_penal)
+
+
 @bot.message_handler(commands=['end_race'])
 def end_race(m):
-    #Este comando es uno de los mas importantes
-    #Dará por terminada la carrera, sumará los puntos e imprimirá la clasificación
-    #También dejará todos los tiempos a 0 de nuevo
+    # Este comando es uno de los mas importantes
+    # Dará por terminada la carrera, sumará los puntos e imprimirá la clasificación
+    # También dejará todos los tiempos a 0 de nuevo
     cid = m.chat.id
     uid = m.from_user.id
     uname = m.from_user.username
 
     if comp.existe_comp(cid):
         if user.is_admin(cid, uid):
-            #Comprobamos que todos los juagdores han metido su tiempo
-        	if timef.all_times_defined(cid):
-        		send(m, "La carrera ha terminado")
-	            #Damos los puntos a los jugadores
-	            timef.give_points(cid)
-	            #Manda un mensaje con el podium (Falta)
-	            #Imprime la clasificación de la competición (Falta)
-	            comp.plus_race_bycomp(cid)
-	            next_race(m)
-	        else:
-	        	send(m, "Todos los pilotos no han metido su tiempo, pueden hacerlo con /time <M:S:MM>")
+            # Comprobamos que todos los juagdores han metido su tiempo
+            if timef.all_times_defined(cid):
+                send(m, "La carrera ha terminado")
+                # Damos los puntos a los jugadores
+                timef.give_points(cid)
+                # Manda un mensaje con el podium (Falta)
+                # Imprime la clasificación de la competición (Falta)
+                comp.plus_race_bycomp(cid)
+                next_race(m)
+            else:
+                send(m, "Todos los pilotos no han metido su tiempo, pueden hacerlo con /time <M:S:MM>")
         else:
             message = uname + " no tiene permisos para realizar esa operacion"
             send(m, message)
-
-
     else:
-        send(m, "No hay ninguna competicion en este grupo")
-        send(m, "Puedes empezar una con /st_comp")
+        send(m, 'No hay competicion en este grupo')
+        send(m, 'Puedes crear una con /st_comp')
 
 
 @bot.message_handler(commands=['my_comps'])
 def my_comps(m):
-    #Primer paso de la herramienta que permite administrar una competición
+    # Primer paso de la herramienta que permite administrar una competición
     cid = m.chat.id
     uid = m.from_user.id
 
@@ -221,17 +230,6 @@ def send_players(callback):
     keyboard_players = get_keyboardPlayers(compid)
     bot.delete_message(cid, callback.message.message_id)
     bot.send_message(cid, 'Elige a quién penalizar', reply_markup=keyboard_players)
-
-
-@bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 2)
-                                                  and aux.to_list(callback.data, 2)[0].isdigit())
-def send_penal(callback):
-    args = aux.to_list(callback.data, 2)
-    compid, pid = args[0], args[1]
-    cid = callback.message.chat.id
-    bot.delete_message(cid, callback.message.message_id)
-    keyboard_penal = get_keyboardPenal(compid, pid)
-    bot.send_message(cid, 'Elige la penalizacion', reply_markup=keyboard_penal)
 
 
 @bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 3))

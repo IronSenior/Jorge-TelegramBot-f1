@@ -76,9 +76,9 @@ def has_time(cid, uid):
     #Esta función comprueba si un usuario ha metido su tiempo
     with open('%s/players.json' % (db_path+str(cid)), 'r')as playersfile:
         players = json.load(playersfile)
-        player_time = players[uid]["lr_time"]
+        player_time = players[str(uid)]["lr_time"]
 
-        if (player_time != "0") and (player_time != "NONE"):
+        if (player_time != "0") and (player_time != "None"):
             return True
 
 
