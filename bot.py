@@ -40,11 +40,23 @@ def new_competition(m):
         else:
             comp.create_comp(cid)
             send(m, "La competicion se ha creado")
+
             #Manda el mensaje de los equipos con el teclado cuando se crea la competición
             bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard_team)
-            #bot.pinChatMessage (cid, keyboard_message(cid))
             #Establece al creador de la competición como administrador de la misma
             comp.add_admin(cid, uid, cname)
+            #Manda el mensaje de los equipos con el teclado cuando se crea la competición
+            message = bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard_team)
+            mid = message.message_id
+            bid = message.from_user.id
+            #Los campos como can_pin_messages solo existen en el objeto ChatMember
+            botMember = bot.get_chat_member (cid, bid)
+            #Si el bot tiene capacidad para anclar mensajes, lo ancla, si no, manda un mensaje
+            if botMember.can_pin_messages or botMember.can_edit_messages:
+                bot.pin_chat_message (cid, mid)
+            else: send(m, 'Si conviertes el grupo en un supergrupo, me haces administrador\
+                           con derecho a anclar mensajes y vuelves a crear la competición,\
+                           puedo anclar el mensaje de los equipos con el teclado al grupo')
             #Abre el chat privado con el admin
             bot.send_message(uid, "Desde este chat, podras administrar tus competiciones usando /my_comps")
     else:
