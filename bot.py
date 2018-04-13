@@ -154,12 +154,6 @@ def next_race(m):
         bot.send_photo(cid, "%s"%(race['image']))
 
 
-@bot.message_handler(commands=['pen'])
-def penalizar(m):
-    cid = m.chat.id
-    uid = m.from_user.username
-
-
 @bot.message_handler(commands=['end_race'])
 def end_race(m):
     #Este comando es uno de los mas importantes
@@ -218,7 +212,7 @@ def send_options(callback):
 
 @bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 2)
                                                   and aux.to_list(callback.data, 2)[0] == 'Penalizar')
-def send_penal(callback):
+def send_players(callback):
     compid = aux.to_list(callback.data, 2)[1]
     cid = callback.message.chat.id
     keyboard_players = get_keyboardPlayers(compid)
@@ -226,9 +220,49 @@ def send_penal(callback):
     bot.send_message(cid, 'Elige a quién penalizar', reply_markup=keyboard_players)
 
 
+@bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 2)
+                                                  and aux.to_list(callback.data, 2)[0].isdigit())
+def send_penal(callback):
+    args = aux.to_list(callback.data, 2)
+    compid, pid = args[0], args[1]
+    cid = callback.message.chat.id
+    bot.delete_message(cid, callback.message.message_id)
+    keyboard_penal = get_keyboardPenal(compid, pid)
+    bot.send_message(cid, 'Elige la penalizacion', reply_markup=keyboard_penal)
+
+
 @bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 3))
 def penalizar(callback):
-    penal, compid, pid = aux.to_list(callback.data)[0:3]
-    user.penal_func()
+    arglist = aux.to_list(callback.data, 3)
+    cid = callback.message.chat.id
+    user.penal_func(arglist)
+    bot.delete_message(cid, callback.message.message_id)
+
+
+@bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 2)
+                                                  and aux.to_list(callback.data, 2)[0] == 'Cambiar nombre')
+def rename(callback):
+    cid = callback.message.chat.id
+    bot.delete_message(cid, callback.message.message_id)
+    compid = int(aux.to_list(callback.data, 2)[1])
+    message = bot.send_message(cid, 'Envía el  nuevo nombre', reply_markup=types.ForceReply())
+    # WIP #
+
+
+@bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 2)
+                                                  and aux.to_list(callback.data, 2)[0] == 'Eliminar competicion')
+def delete(callback):
+    compid = aux.to_list(callback.data, 2)[1]
+    uid = callback.from_user.id
+    cid = callback.message.chat.id
+    comp.delete_comp(compid, uid)
+    bot.delete_message(cid, callback.message.message_id)
+    bot.send_message(cid, 'Competicion eliminada correctamente')
+
+
+@bot.callback_query_handler(func=lambda callback: True)
+def test(callback):
+    print(callback.data)
+
 
 bot.polling()
