@@ -71,3 +71,24 @@ def give_points(cid):
                 data[dct[time]] += points[index]
     with open('%s/rank.json' % (db_path+str(cid)), 'w') as rankfile:
         json.dump(data, rankfile, indent=3)
+
+def has_time(cid, uid):
+    #Esta función comprueba si un usuario ha metido su tiempo
+    with open('%s/players.json' % (db_path+str(cid)), 'r')as playersfile:
+        players = json.load(playersfile)
+        player_time = players[uid]["lr_time"]
+
+        if (player_time != "0") and (player_time != "NONE"):
+            return True
+
+
+def all_times_defined(cid):
+    #Esta función comprueba si todos los jugadores han metido su tiempo
+    with open('%s/players.json' % (db_path+str(cid)), 'r')as playersfile:
+        players = json.load(playersfile)
+
+        for player in players["player_list"]:
+            if not has_time(cid, player):
+                return False
+        return True
+
