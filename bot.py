@@ -42,7 +42,7 @@ def new_competition(m):
             send(m, "La competicion se ha creado")
             #Manda el mensaje de los equipos con el teclado cuando se crea la competición
             bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard_team)
-            bot.pinChatMessage (cid, keyboard_message(cid))
+            #bot.pinChatMessage (cid, keyboard_message(cid))
             #Establece al creador de la competición como administrador de la misma
             comp.add_admin(cid, uid, cname)
             #Abre el chat privado con el admin
