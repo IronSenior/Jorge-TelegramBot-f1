@@ -70,12 +70,14 @@ def get_keyboardAdmin(uid):
                 keyboard_comps.add(types.InlineKeyboardButton("%s" % chat_name, callback_data=chatid))
     return keyboard_comps
 
+
 def get_keyboardOptions(cid):
     keyboard_opts = types.InlineKeyboardMarkup()
-    opt = ['Penalizar', 'Cambiar nombre', 'Eliminar competición']
+    opt = ['Penalizar', 'Cambiar nombre', 'Eliminar competicion']
     for option in opt:
         keyboard_opts.add(types.InlineKeyboardButton(option, callback_data='{}/{}'.format(option, int(cid))))
     return keyboard_opts
+
 
 def get_keyboardPlayers(cid):
     keyboard_players = types.InlineKeyboardMarkup()
@@ -85,7 +87,7 @@ def get_keyboardPlayers(cid):
         id_list = data['player_list']
         for pid in id_list:
             name = data[str(pid)]['name']
-            keyboard_players.add(types.InlineKeyboardButton(name, callback_data='{}/{}'.format(pid, int(cid))))
+            keyboard_players.add(types.InlineKeyboardButton(name, callback_data='{}/{}'.format(cid, pid)))
     return keyboard_players
 
 
@@ -95,7 +97,3 @@ def get_keyboardPenal(cid, uid):
     for elem in penals:
         keyboard_penal.add(types.InlineKeyboardButton(elem, callback_data='{}/{}/{}'.format(elem, cid, uid)))
     return keyboard_penal
-
-
-def empty():
-    return types.InlineKeyboardMarkup()

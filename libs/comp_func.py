@@ -56,7 +56,7 @@ def delete_comp(cid, uid):
     with open('%scomps.json'%db_path, 'r') as compsfile:
         comps = json.load(compsfile)
         for com_id in comps["comps"]:
-            if cid == int(com_id):
+            if int(cid) == com_id:
                 comps["comps"].remove(com_id)
 	#Una vez borrada la id sobreescribe el diccionario de python en el comps.json
     with open('%scomps.json'%db_path, 'w') as compsfile:
