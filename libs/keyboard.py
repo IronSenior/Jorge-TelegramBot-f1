@@ -67,30 +67,35 @@ def get_keyboardAdmin(uid):
         for userid in all_admins:
             for chatid in all_admins[userid]:
                 chat_name = all_admins[uid][str(chatid)]
-                keyboard_comps.add(types.InlineKeyboardButton("%s" % chat_name, callback_data=int(chatid)))
+                keyboard_comps.add(types.InlineKeyboardButton("%s" % chat_name, callback_data=chatid))
     return keyboard_comps
 
-def get_keyboardOptions():
-    keyboard_opts = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+def get_keyboardOptions(cid):
+    keyboard_opts = types.InlineKeyboardMarkup()
     opt = ['Penalizar', 'Cambiar nombre', 'Eliminar competición']
     for option in opt:
-        keyboard_opts.add(types.KeyboardButton('%s' % option))
+        keyboard_opts.add(types.InlineKeyboardButton(option, callback_data='{}/{}'.format(option, int(cid))))
     return keyboard_opts
 
 def get_keyboardPlayers(cid):
-    keyboard_players = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+    keyboard_players = types.InlineKeyboardMarkup()
     path = db_path + str(cid)
     with open('%s/players.json' % path, 'r') as playersfile:
         data = json.load(playersfile)
-        id_list = [data['player_list']]
+        id_list = data['player_list']
         for pid in id_list:
-            keyboard_players.add(types.KeyboardButton('%s' % data[str(pid)]['name']))
+            name = data[str(pid)]['name']
+            keyboard_players.add(types.InlineKeyboardButton(name, callback_data='{}/{}'.format(pid, int(cid))))
     return keyboard_players
 
 
-def get_keyboardPenal():
-    keyboard_penal = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+def get_keyboardPenal(cid, uid):
+    keyboard_penal = types.InlineKeyboardMarkup()
     penals = ['2', '5', '10', '15']
     for elem in penals:
-        keyboard_penal.add(types.KeyboardButton(elem))
+        keyboard_penal.add(types.InlineKeyboardButton(elem, callback_data='{}/{}/{}'.format(elem, cid, uid)))
     return keyboard_penal
+
+
+def empty():
+    return types.InlineKeyboardMarkup()
