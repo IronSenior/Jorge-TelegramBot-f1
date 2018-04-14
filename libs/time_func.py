@@ -92,3 +92,13 @@ def all_times_defined(cid):
                 return False
         return True
 
+
+def reset_time(cid):
+    # Esta función pone todos los tiempos a 0
+    with open('%s/players.json' % (db_path + str(cid)), 'r') as playersfile:
+        players = json.load(playersfile)
+        for player in players['player_list']:
+            players[str(player)]['lr_time'] = '0'
+
+
+

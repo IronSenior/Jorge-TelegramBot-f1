@@ -184,6 +184,7 @@ def end_race(m):
                 # Manda un mensaje con el podium (Falta)
                 # Imprime la clasificación de la competición (Falta)
                 comp.plus_race_bycomp(cid)
+                time.reset_time(cid)
                 next_race(m)
             else:
                 send(m, "Todos los pilotos no han metido su tiempo, pueden hacerlo con /time <M:S:MM>")
