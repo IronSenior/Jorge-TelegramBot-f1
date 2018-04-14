@@ -99,6 +99,9 @@ def reset_time(cid):
         players = json.load(playersfile)
         for player in players['player_list']:
             players[str(player)]['lr_time'] = '0'
+    with open('%s/players.json' % (db_path+str(cid)), 'w') as playersfile:
+        json.dump(players, playersfile, indent=3)
+
 
 
 
