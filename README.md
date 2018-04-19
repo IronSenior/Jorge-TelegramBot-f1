@@ -1,4 +1,4 @@
-## Título del Proyecto
+## F1 Jorge telegram Bot
 
 F1 Jorge Bot es un bot de Telegram cuyo objetivo será el Management de una competición de Fórmula 1 2015 desde un grupo de Telegram. El mismo bot informará sobre las próximas carreras.
 También contará con información (aportada con anterioridad por el usuario) sobre los jugadores que participan en el torneo, asi como de los equipos a los que pertenecen.
