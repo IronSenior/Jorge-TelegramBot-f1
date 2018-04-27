@@ -247,9 +247,20 @@ def rename(callback):
     cid = callback.message.chat.id
     bot.delete_message(cid, callback.message.message_id)
     compid = int(aux.to_list(callback.data, 2)[1])
-    message = bot.send_message(cid, 'Envía el  nuevo nombre', reply_markup=types.ForceReply())
-    # WIP #
+    bot.send_message(cid, 'Envia el nuevo nombre(competicion en %s)' % compid, reply_markup=types.ForceReply())
 
+
+@bot.message_handler(func=lambda message:not(message.reply_to_message is None) and
+                                        len(message.reply_to_message.text) > 21 and
+                                        message.reply_to_message.text[0:21] == 'Envia el nuevo nombre' and
+                                        message.reply_to_message.from_user.id == bot.get_me().id)
+def change_name(message):
+    compid = message.reply_to_message.text[37:-1]
+    new_name = message.text
+    adminid = str(message.from_user.id)
+    comp.name(adminid, compid, new_name)
+    bot.delete_message(message.chat.id, message.reply_to_message.message_id)
+    bot.send_message(message.chat.id, 'Nombre cambiado correctamente')
 
 @bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 2)
                                                   and aux.to_list(callback.data, 2)[0] == 'Eliminar competicion')

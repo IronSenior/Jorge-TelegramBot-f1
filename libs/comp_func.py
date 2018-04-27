@@ -129,3 +129,10 @@ def comp_list():
 		for item in lst:
 			ret.append(str(item))
 	return ret
+
+def name(adminid, compid, newname):
+	with open('%sall_admins.json' % db_path, 'r') as adminfile:
+		data = json.load(adminfile)
+	data[adminid][compid] = newname
+	with open('%sall_admins.json' % db_path, 'w') as adminfile:
+		json.dump(data, adminfile, indent=3)
