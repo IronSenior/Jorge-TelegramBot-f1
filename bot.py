@@ -242,9 +242,10 @@ def send_players(callback):
 def penalizar(callback):
     arglist = aux.to_list(callback.data, 3)
     cid = callback.message.chat.id
-    user.penal_func(arglist)
+    message = user.penal_func(arglist)
     bot.delete_message(cid, callback.message.message_id)
     bot.send_message(cid, u'Penalización aplicada')
+    bot.send_message(int(arglist[1]), message)
 
 
 @bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 2)

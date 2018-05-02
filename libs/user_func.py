@@ -93,6 +93,7 @@ def penal_func(lst):  # Recibe una lista con la estructura: [competicion, jugado
 	with open('%s/players.json' % path, 'r') as outfile:
 		comp = json.load(outfile)
 		time = comp[pid]['lr_time']
+		name = comp[pid]['name']
 
 	# Transforma el string time en una lista para modificar por separado min, seg y mil.
 
@@ -116,7 +117,7 @@ def penal_func(lst):  # Recibe una lista con la estructura: [competicion, jugado
 		comp[pid]['lr_time'] = time
 		json.dump(comp, outfile, indent=3)
 	# Añade la penalización al tiempo marcado por el jugador y se vuelca en el JSON.
-
+	return ('{} ha sido penalizado con {} segundos'.format(name, str(penal)))
 
 def have_comps(uid):
 	#Comprueba si el usuario es administrador de alguna competición
