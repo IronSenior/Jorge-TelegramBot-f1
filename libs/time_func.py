@@ -60,6 +60,24 @@ def list_times(cid):
     return lst, dct
 
 
+def race_ranking(cid):
+    # Devuelve una lista ordenada de tuplas (nombre, tiempo)
+    lst, dct= list_times(cid)
+    # Obtenemos las ids ordenadas
+    ret = []
+    with open('%/players.json' % (db_path+str(cid)), 'r')as rankfile:
+        # Abrimos el archivo base de la competición
+        players = json.load(rankfile)
+        for item in lst:
+            pid = str(dct[item])
+            # Tenemos que acceder al diccionario, que es donde estan las ids,
+            # usando la lista ordenada
+            name = players[pid]['name']
+            time = players[pid]['lr_time']
+            ret.append((name, time))
+    return ret
+
+
 def give_points(cid):
     points = (25, 18, 15, 12, 10, 8, 6, 4, 2, 1)  # Puntuaciones según posición
     lst, dct = list_times(cid)
