@@ -95,29 +95,31 @@ def penal_func(lst):  # Recibe una lista con la estructura: [competicion, jugado
 		time = comp[pid]['lr_time']
 		name = comp[pid]['name']
 
-	# Transforma el string time en una lista para modificar por separado min, seg y mil.
+		# Transforma el string time en una lista para modificar por separado min, seg y mil.
+	if time != '0' and time != 'None' and time !='DSQ':
+		minutes = int(time.split(":")[0])
+		seconds = int(time.split(":")[1])
+		miles = int(time.split(":")[2])
+		seconds = seconds + penal
 
-	minutes = int(time.split(":")[0])
-	seconds = int(time.split(":")[1])
-	miles = int(time.split(":")[2])
-	seconds = seconds + penal
+		# Si los segundos totales sobrepasan los 60, se modificarán los minutos.
+		if(seconds>=60):
+			minutes = minutes + 1
+			seconds = seconds - 60
 
-	# Si los segundos totales sobrepasan los 60, se modificarán los minutos.
-	if(seconds>=60):
-		minutes = minutes + 1
-		seconds = seconds - 60
+		if(len(str(seconds))==1):
+			time = str(minutes) + ":" + "0" + str(seconds) + ":" + str(miles)
+		else:
+			time = str(minutes) + ":" + str(seconds) + ":" + str(miles)
 
-	if(len(str(seconds))==1):
-		time = str(minutes) + ":" + "0" + str(seconds) + ":" + str(miles)
+
+		with open('%s/players.json' % path, 'w') as outfile:
+			comp[pid]['lr_time'] = time
+			json.dump(comp, outfile, indent=3)
+		# Añade la penalización al tiempo marcado por el jugador y se vuelca en el JSON.
+		return ([True, '{} ha sido penalizado con {} segundos'.format(name, str(penal))])
 	else:
-		time = str(minutes) + ":" + str(seconds) + ":" + str(miles)
-
-
-	with open('%s/players.json' % path, 'w') as outfile:
-		comp[pid]['lr_time'] = time
-		json.dump(comp, outfile, indent=3)
-	# Añade la penalización al tiempo marcado por el jugador y se vuelca en el JSON.
-	return ('{} ha sido penalizado con {} segundos'.format(name, str(penal)))
+		return ([False])
 
 def have_comps(uid):
 	#Comprueba si el usuario es administrador de alguna competición

@@ -242,10 +242,15 @@ def send_players(callback):
 def penalizar(callback):
     arglist = aux.to_list(callback.data, 3)
     cid = callback.message.chat.id
-    message = user.penal_func(arglist)
-    bot.delete_message(cid, callback.message.message_id)
-    bot.send_message(cid, u'Penalización aplicada')
-    bot.send_message(int(arglist[1]), message)
+    ret = user.penal_func(arglist)
+    if ret[0]:
+        message = ret[1]
+        bot.delete_message(cid, callback.message.message_id)
+        bot.send_message(cid, u'Penalización aplicada')
+        bot.send_message(int(arglist[1]), message)
+    else:
+        bot.delete_message(cid, callback.message.message_id)
+        bot.send_message(cid, u'No se puede penalizar a ese jugador porque no tiene ningún tiempo guardado.')
 
 
 @bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 2)
