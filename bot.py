@@ -7,7 +7,6 @@ from libs import time_func as timef
 from libs import aux
 from libs.keyboard import *
 import private as tk
-import time
 import random
 
 
@@ -121,15 +120,21 @@ def dl_competition(m):
 def time(m):
     cid = m.chat.id
     uid = m.from_user.id
-    uname = m.from_user.first_name
+    uname = m.from_user.username
     # time = telebot.util.extract_arguments(m.text)
-    time = m.text.split()[1]
+    splitm = m.text.split()
+    if len(splitm) == 2:
+        time = splitm[1]
+    else:
+        time = 'invalid'
+
     if comp.existe_comp(cid):
         if timef.add_time(cid, uid, time):
             msg = uname + " ha agregado su tiempo"
             send(m, msg)
         else:
             send(m, "No se ha podido agregar el tiempo [Error de formato]")
+            send(m, 'Usa /time + tiempo(MM:ss:mmm)')
     else:
         send(m, "No hay ninguna competición en este grupo")
         send(m, "Puedes empezar una con /st_comp")
@@ -230,7 +235,7 @@ def send_players(callback):
     cid = callback.message.chat.id
     keyboard_players = get_keyboardPlayers(compid)
     bot.delete_message(cid, callback.message.message_id)
-    bot.send_message(cid, 'Elige a quién penalizar', reply_markup=keyboard_players)
+    bot.send_message(cid, u'Elige a quién penalizar', reply_markup=keyboard_players)
 
 
 @bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 3))
@@ -239,6 +244,7 @@ def penalizar(callback):
     cid = callback.message.chat.id
     user.penal_func(arglist)
     bot.delete_message(cid, callback.message.message_id)
+    bot.send_message(cid, u'Penalización aplicada')
 
 
 @bot.callback_query_handler(func=lambda callback: aux.is_to_list(callback.data, 2)
