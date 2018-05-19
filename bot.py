@@ -43,7 +43,7 @@ def new_competition(m):
             send(m, "La competicion se ha creado")
 
             #Manda el mensaje de los equipos con el teclado cuando se crea la competición
-            bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard_team)
+            #bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard_team)
             #Establece al creador de la competición como administrador de la misma
             comp.add_admin(cid, uid, cname)
             #Manda el mensaje de los equipos con el teclado cuando se crea la competición
@@ -347,7 +347,7 @@ def clasif_info(m):
 
 
 @bot.message_handler(commands=['rank_race'])
-def lrace_info(m):    
+def lrace_info(m):
     #🏁Enhorabuena a los pilotos🏁
     #-*- coding: utf-8 -*-
     #Este comando nos dará información sobre la clasificación de la ultima carrera
@@ -360,9 +360,9 @@ def lrace_info(m):
             🏁Enhorabuena a los pilotos🏁
 
     *Posición*      *Nombre*                        *Tiempo*
-    *1º Puesto*     {}                  🥇              {}
-    *2º Puesto*     {}                  🥈              {}
-    *3º Puesto*     {}                  🥉              {}'''.format(rank[0][0],rank[0][1],rank[1][0],rank[1][1],rank[2][0],rank[2][1])
+    *1º Puesto*     {}                 🥇               {}
+    *2º Puesto*     {}                 🥈               {}
+    *3º Puesto*     {}                 🥉               {}'''.format(rank[0][0],rank[0][1],rank[1][0],rank[1][1],rank[2][0],rank[2][1])
 
     i = 4
     while i < len(rank):
