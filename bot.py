@@ -304,7 +304,7 @@ def podium_info(m):
                     🏆 *Pódium del Campeonato* 🏆
                     🏁Enhorabuena a los pilotos🏁
 
-🥇
+
                     _JUGADOR_                       _PUNTOS_
             🥇     *1º Puesto*      🥇
                         {}                              {}
