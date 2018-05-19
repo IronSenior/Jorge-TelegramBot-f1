@@ -65,7 +65,7 @@ def race_ranking(cid):
     lst, dct= list_times(cid)
     # Obtenemos las ids ordenadas
     ret = []
-    with open('%/players.json' % (db_path+str(cid)), 'r')as rankfile:
+    with open('%s/players.json' %(db_path+str(cid)), 'r')as rankfile:
         # Abrimos el archivo base de la competición
         players = json.load(rankfile)
         for item in lst:

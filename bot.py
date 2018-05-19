@@ -5,6 +5,7 @@ from libs import comp_func as comp
 from libs import user_func as user
 from libs import time_func as timef
 from libs import aux
+from libs import rank_func
 from libs.keyboard import *
 import private as tk
 import random
@@ -149,7 +150,7 @@ def next_race(m):
         race = comp.get_race_bycomp(cid)
 
         sendMarkdownMessage(cid, """
-            🎟 *Próxima Carrera* 🎟
+            🚥 *Próxima Carrera* 🚥
 
             *Nombre: * {}
             *Vueltas: * {}
@@ -186,8 +187,8 @@ def end_race(m):
                 send(m, "La carrera ha terminado")
                 # Damos los puntos a los jugadores
                 timef.give_points(cid)
-                # Manda un mensaje con el podium (Falta)
-                # Imprime la clasificación de la competición (Falta)
+                lrace_info(m)
+                clasif_info(m)
                 comp.plus_race_bycomp(cid)
                 timef.reset_time(cid)
                 next_race(m)
@@ -288,6 +289,89 @@ def delete(callback):
 @bot.callback_query_handler(func=lambda callback: True)
 def test(callback):
     print(callback.data)
+
+
+#################Mensajes Especiales#####################
+#semaforo -> 🚥
+@bot.message_handler(commands=['podium_comp'])
+def podium_info(m):
+    #-*- coding: utf-8 -*-
+    #Este comando nos dará información sobre el podium
+    cid = m.chat.id
+    rank = rank_func.ranking(cid)
+    #copa dorada, plateada para el 2º, etc; medallas para el podio de las carreras, copas para el final
+    sendMarkdownMessage(cid, """
+                    🏆 *Pódium del Campeonato* 🏆
+                    🏁Enhorabuena a los pilotos🏁
+
+🥇
+                    _JUGADOR_                       _PUNTOS_
+            🥇     *1º Puesto*      🥇
+                        {}                              {}
+
+            🥈     *2º Puesto*      🥈
+                        {}                              {}
+
+            🥉     *3º Puesto*      🥉
+                        {}                              {}
+
+        """.format(rank[0][0],rank[0][1],rank[1][0],rank[1][1],rank[2][0],rank[2][1]))
+
+
+
+
+@bot.message_handler(commands=['rank_comp'])
+def clasif_info(m):
+    #-*- coding: utf-8 -*-
+    #Este comando nos dará información sobre la clasificación del campeonato
+    cid = m.chat.id
+    rank = rank_func.ranking(cid)
+
+    cabecera = '''
+         🏆 *Clasificación del campeonato* 🏆
+            🏁Enhorabuena a los pilotos🏁
+
+    *Posición*      *Nombre*                        *Puntos*
+    *1º Puesto*     {}                  🥇              {}
+    *2º Puesto*     {}                  🥈              {}
+    *3º Puesto*     {}                  🥉              {}'''.format(rank[0][0],rank[0][1],rank[1][0],rank[1][1],rank[2][0],rank[2][1])
+
+    i = 4
+    while i < len(rank):
+        aux ='''
+        *{}º Puesto*     {}                                 {}'''.format(i,rank[i][0], rank[i][1])
+        cabecera = cabecera + aux
+        i += 1
+
+    sendMarkdownMessage(cid, cabecera)
+
+
+@bot.message_handler(commands=['rank_race'])
+def lrace_info(m):    
+    #🏁Enhorabuena a los pilotos🏁
+    #-*- coding: utf-8 -*-
+    #Este comando nos dará información sobre la clasificación de la ultima carrera
+
+    cid = m.chat.id
+    rank = timef.race_ranking(cid)
+
+    cabecera = '''
+         🏆 *Clasificación de la carrera* 🏆
+            🏁Enhorabuena a los pilotos🏁
+
+    *Posición*      *Nombre*                        *Tiempo*
+    *1º Puesto*     {}                  🥇              {}
+    *2º Puesto*     {}                  🥈              {}
+    *3º Puesto*     {}                  🥉              {}'''.format(rank[0][0],rank[0][1],rank[1][0],rank[1][1],rank[2][0],rank[2][1])
+
+    i = 4
+    while i < len(rank):
+        aux ='''
+        *{}º Puesto*     {}                                 {}'''.format(i,rank[i][0], rank[i][1])
+        cabecera = cabecera + aux
+        i+=1
+
+    sendMarkdownMessage(cid, cabecera)
 
 
 bot.polling()
