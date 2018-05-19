@@ -20,10 +20,10 @@ Si quieres desarrollar tu propio bot lo primero será conseguir un token propio 
 
 ## Contribución
 
--Haz un Fork (https://github.com/IronSenior/Jorge-TelegramBot-f1/fork)
--Crea tu propia rama (git checkout -b mi-propia-rama)
--Haz commits de tus cambios (git commit -am 'Añadido sistema de voz.')
--Haz push a la rama. (git push origin mi-propia-rama)
+-Haz un Fork (https://github.com/IronSenior/Jorge-TelegramBot-f1/fork)  
+-Crea tu propia rama (git checkout -b mi-propia-rama)  
+-Haz commits de tus cambios (git commit -am 'Añadido sistema de voz.')  
+-Haz push a la rama. (git push origin mi-propia-rama)  
 -Solicita un pull.
 
 ## Historial de Versiones
