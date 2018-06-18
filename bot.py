@@ -366,11 +366,10 @@ def lrace_info(m):
 
     i = 4
     while i < len(rank):
-        aux ='''
-        *{}º Puesto*     {}                                 {}'''.format(i,rank[i][0], rank[i][1])
-        cabecera = cabecera + aux
-        i+=1
-
+        nextp = '''
+        *{}º Puesto*     {}                                 {}'''.format(i, rank[i][0], rank[i][1])
+        cabecera = cabecera + nextp
+        i += 1
     sendMarkdownMessage(cid, cabecera)
 
 
