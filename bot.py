@@ -52,9 +52,9 @@ def new_competition(m):
             #Si el bot tiene capacidad para anclar mensajes, lo ancla, si no, manda un mensaje
             if botMember.can_pin_messages or botMember.can_edit_messages:
                 bot.pin_chat_message (cid, mid)
-            else: send(m, 'Si conviertes el grupo en un supergrupo, me haces administrador\
-                           con derecho a anclar mensajes y vuelves a crear la competición,\
-                           puedo anclar el mensaje de los equipos con el teclado al grupo')
+            else: send(m, 'Si conviertes el grupo en un supergrupo, me haces administrador '
+                          'con derecho a anclar mensajes y vuelves a crear la competición, '
+                          'puedo anclar el mensaje de los equipos con el teclado al grupo')
             #Abre el chat privado con el admin
             bot.send_message(uid, "Desde este chat, podras administrar tus competiciones usando /my_comps")
     else:

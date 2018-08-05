@@ -24,7 +24,7 @@ def join_in(cid, uid, unick, uteam):
 		data = {unick: 0}
 		rankd.update(data)
 	with open('%s/rank.json' %path, 'w') as rank:
-		json.dump(rankd, rank, indent=3)git
+		json.dump(rankd, rank, indent=3)
 
 	return True
 
