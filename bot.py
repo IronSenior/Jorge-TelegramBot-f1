@@ -186,9 +186,11 @@ def end_race(m):
             if timef.all_times_defined(cid):
                 send(m, "La carrera ha terminado")
                 # Damos los puntos a los jugadores
+                #Y mostramos las clasificaciones de la carrera y el campeonato
                 timef.give_points(cid)
                 lrace_info(m)
                 clasif_info(m)
+                #Se termina la carrera y muestra información sombre la siguiente
                 comp.plus_race_bycomp(cid)
                 timef.reset_time(cid)
                 next_race(m)
