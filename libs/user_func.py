@@ -21,10 +21,10 @@ def join_in(cid, uid, unick, uteam):
 
 	with open('%s/rank.json' % path, 'r') as rank:
 		rankd=json.load(rank)
-		data = {uid: 0}
+		data = {unick: 0}
 		rankd.update(data)
 	with open('%s/rank.json' %path, 'w') as rank:
-		json.dump(rankd, rank, indent=3)
+		json.dump(rankd, rank, indent=3)git
 
 	return True
 

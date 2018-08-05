@@ -46,7 +46,7 @@ def to_milis(time):
 
 
 def list_times(cid):
-    # Devuelve una lista con los tiempos(ordenados) y un diccionario tiempo:id
+    # Devuelve una lista con los tiempos(ordenados) y un diccionario tiempo:nombre
     # Lo hacemos así porque los diccionarios no tienen índices.
     with open('%s/players.json' % (db_path+str(cid)), 'r')as rankfile:
         data = json.load(rankfile)
@@ -54,12 +54,17 @@ def list_times(cid):
         lst = []
         for key in data:
             if key.isdigit() and data[key]['lr_time'] != 'DSQ':
-                dct.update({to_milis(data[key]['lr_time']): key})
+                dct.update({to_milis(data[key]['lr_time']): data[key]['name']})
                 lst.append(to_milis(data[key]['lr_time']))
     lst = aux.sort(lst)
     return lst, dct
 
-
+def getid(name, cid):
+    with open('%s/players.json' % (db_path+str(cid)), 'r') as players:
+        data = json.load(players)
+        for item in data:
+            if item != 'player_list' and data[item]['name'] == name:
+                return item
 def race_ranking(cid):
     # Devuelve una lista ordenada de tuplas (nombre, tiempo)
     lst, dct= list_times(cid)
@@ -69,10 +74,10 @@ def race_ranking(cid):
         # Abrimos el archivo base de la competición
         players = json.load(rankfile)
         for item in lst:
-            pid = str(dct[item])
+            pid = getid(dct[item], cid)
             # Tenemos que acceder al diccionario, que es donde estan las ids,
             # usando la lista ordenada
-            name = players[pid]['name']
+            name = item
             time = players[pid]['lr_time']
             ret.append((name, time))
     return ret
