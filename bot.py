@@ -41,9 +41,6 @@ def new_competition(m):
         else:
             comp.create_comp(cid)
             send(m, "La competicion se ha creado")
-
-            #Manda el mensaje de los equipos con el teclado cuando se crea la competición
-            #bot.send_message(cid, keyboard_message(cid), reply_markup = keyboard_team)
             #Establece al creador de la competición como administrador de la misma
             comp.add_admin(cid, uid, cname)
             #Manda el mensaje de los equipos con el teclado cuando se crea la competición
@@ -302,23 +299,26 @@ def podium_info(m):
     cid = m.chat.id
     rank = rank_func.ranking(cid)
     #copa dorada, plateada para el 2º, etc; medallas para el podio de las carreras, copas para el final
-    sendMarkdownMessage(cid, """
-                    🏆 *Pódium del Campeonato* 🏆
-                    🏁Enhorabuena a los pilotos🏁
+    try:
+        sendMarkdownMessage(cid, """
+                        🏆 *Pódium del Campeonato* 🏆
+                        🏁Enhorabuena a los pilotos🏁
 
 
-                    _JUGADOR_                       _PUNTOS_
-            🥇     *1º Puesto*      🥇
-                        {}                              {}
+                        _JUGADOR_                       _PUNTOS_
+                🥇     *1º Puesto*      🥇
+                            {}                              {}
 
-            🥈     *2º Puesto*      🥈
-                        {}                              {}
+                🥈     *2º Puesto*      🥈
+                            {}                              {}
 
-            🥉     *3º Puesto*      🥉
-                        {}                              {}
+                🥉     *3º Puesto*      🥉
+                            {}                              {}
 
-        """.format(rank[0][0],rank[0][1],rank[1][0],rank[1][1],rank[2][0],rank[2][1]))
-
+            """.format(rank[0][0],rank[0][1],rank[1][0],rank[1][1],rank[2][0],rank[2][1]))
+    except:
+        print "ERROR: No se pudo enviar el podium del torneo"
+        send_message(m, "No se puede crear el podium")
 
 
 
@@ -328,24 +328,27 @@ def clasif_info(m):
     #Este comando nos dará información sobre la clasificación del campeonato
     cid = m.chat.id
     rank = rank_func.ranking(cid)
+    try:
+        cabecera = '''
+             🏆 *Clasificación del campeonato* 🏆
+                🏁Enhorabuena a los pilotos🏁
 
-    cabecera = '''
-         🏆 *Clasificación del campeonato* 🏆
-            🏁Enhorabuena a los pilotos🏁
+        *Posición*      *Nombre*                        *Puntos*
+        *1º Puesto*     {}                  🥇              {}
+        *2º Puesto*     {}                  🥈              {}
+        *3º Puesto*     {}                  🥉              {}'''.format(rank[0][0],rank[0][1],rank[1][0],rank[1][1],rank[2][0],rank[2][1])
 
-    *Posición*      *Nombre*                        *Puntos*
-    *1º Puesto*     {}                  🥇              {}
-    *2º Puesto*     {}                  🥈              {}
-    *3º Puesto*     {}                  🥉              {}'''.format(rank[0][0],rank[0][1],rank[1][0],rank[1][1],rank[2][0],rank[2][1])
+        i = 4
+        while i < len(rank):
+            aux ='''
+            *{}º Puesto*     {}                                 {}'''.format(i,rank[i][0], rank[i][1])
+            cabecera = cabecera + aux
+            i += 1
 
-    i = 4
-    while i < len(rank):
-        aux ='''
-        *{}º Puesto*     {}                                 {}'''.format(i,rank[i][0], rank[i][1])
-        cabecera = cabecera + aux
-        i += 1
-
-    sendMarkdownMessage(cid, cabecera)
+        sendMarkdownMessage(cid, cabecera)
+    except:
+        print ("ERROR: No se pudo enviar la clasificacion del torneo")
+        send_message(m, "No se puede crear la tabla de clasificacion")
 
 
 @bot.message_handler(commands=['rank_race'])
@@ -356,23 +359,26 @@ def lrace_info(m):
 
     cid = m.chat.id
     rank = timef.race_ranking(cid)
+    try:
+        cabecera = '''
+             🏆 *Clasificación de la carrera* 🏆
+                🏁Enhorabuena a los pilotos🏁
 
-    cabecera = '''
-         🏆 *Clasificación de la carrera* 🏆
-            🏁Enhorabuena a los pilotos🏁
+        *Posición*      *Nombre*                        *Tiempo*
+        *1º Puesto*     {}                 🥇               {}
+        *2º Puesto*     {}                 🥈               {}
+        *3º Puesto*     {}                 🥉               {}'''.format(rank[0][0],rank[0][1],rank[1][0],rank[1][1],rank[2][0],rank[2][1])
 
-    *Posición*      *Nombre*                        *Tiempo*
-    *1º Puesto*     {}                 🥇               {}
-    *2º Puesto*     {}                 🥈               {}
-    *3º Puesto*     {}                 🥉               {}'''.format(rank[0][0],rank[0][1],rank[1][0],rank[1][1],rank[2][0],rank[2][1])
-
-    i = 4
-    while i < len(rank):
-        nextp = '''
-        *{}º Puesto*     {}                                 {}'''.format(i, rank[i][0], rank[i][1])
-        cabecera = cabecera + nextp
-        i += 1
-    sendMarkdownMessage(cid, cabecera)
+        i = 4
+        while i < len(rank):
+            nextp = '''
+            *{}º Puesto*     {}                                 {}'''.format(i, rank[i][0], rank[i][1])
+            cabecera = cabecera + nextp
+            i += 1
+        sendMarkdownMessage(cid, cabecera)
+    except:
+        print "ERROR: No se pudo enviar el podium de la carrera"
+        send_message(m, "No se puede crear el podium")
 
 
 bot.polling()
