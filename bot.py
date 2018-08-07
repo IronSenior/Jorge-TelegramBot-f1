@@ -338,10 +338,10 @@ def clasif_info(m):
         *2º Puesto*     {}                  🥈              {}
         *3º Puesto*     {}                  🥉              {}'''.format(rank[0][0],rank[0][1],rank[1][0],rank[1][1],rank[2][0],rank[2][1])
 
-        i = 4
+        i = 3
         while i < len(rank):
             aux ='''
-            *{}º Puesto*     {}                                 {}'''.format(i,rank[i][0], rank[i][1])
+            *{}º Puesto*     {}                                 {}'''.format((i+1),rank[i][0], rank[i][1])
             cabecera = cabecera + aux
             i += 1
 
@@ -369,10 +369,10 @@ def lrace_info(m):
         *2º Puesto*     {}                 🥈               {}
         *3º Puesto*     {}                 🥉               {}'''.format(rank[0][0],rank[0][1],rank[1][0],rank[1][1],rank[2][0],rank[2][1])
 
-        i = 4
+        i = 3
         while i < len(rank):
             nextp = '''
-            *{}º Puesto*     {}                                 {}'''.format(i, rank[i][0], rank[i][1])
+            *{}º Puesto*     {}                                 {}'''.format((i+1), rank[i][0], rank[i][1])
             cabecera = cabecera + nextp
             i += 1
         sendMarkdownMessage(cid, cabecera)
